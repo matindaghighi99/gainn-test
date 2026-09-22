@@ -103,8 +103,10 @@ nav.on .bar{height:64px}
 #gl{position:absolute;inset:0;z-index:0}
 #gl canvas{display:block;width:100%;height:100%}
 .hero-fx{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(900px 620px at 72% 42%,rgba(30,55,101,.42),rgba(6,9,14,0) 70%)}
-.grain{position:absolute;inset:0;pointer-events:none;opacity:.2;z-index:2}
+  background:
+    radial-gradient(900px 620px at 70% 44%,rgba(30,55,101,.42),rgba(6,9,14,0) 70%),
+    linear-gradient(90deg,rgba(6,9,14,.93) 0%,rgba(6,9,14,.78) 26%,rgba(6,9,14,.30) 44%,rgba(6,9,14,0) 56%)}
+.grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.10;z-index:2}
 .hero-in{position:relative;z-index:3;max-width:660px}
 .tag{display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 16px 0 12px;border:1px solid rgba(124,166,226,.3);border-radius:999px;background:rgba(30,55,101,.24);backdrop-filter:blur(6px)}
 .tag span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--link)}
@@ -235,7 +237,9 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .ev{flex-wrap:wrap;gap:18px}
   .mq{flex-direction:column;align-items:flex-start;gap:16px;padding:26px 0}
   .mq-vp{width:100%;flex:none}
-  .hero-fx{background:radial-gradient(700px 500px at 50% 30%,rgba(30,55,101,.4),rgba(6,9,14,0) 70%)}
+  .hero-fx{background:
+    radial-gradient(700px 500px at 50% 34%,rgba(30,55,101,.4),rgba(6,9,14,0) 70%),
+    linear-gradient(180deg,rgba(6,9,14,.55) 0%,rgba(6,9,14,.40) 38%,rgba(6,9,14,.52) 72%,rgba(6,9,14,.78) 100%)}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition-duration:.01ms!important}
@@ -583,94 +587,150 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   const rnd=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
   rnd.setClearColor(0x000000,0); host.appendChild(rnd.domElement);
 
-  const grp=new THREE.Group(); grp.position.set(1.55,.12,0); scene.add(grp);
+  const grp=new THREE.Group(); grp.position.set(1.82,.12,0); scene.add(grp);
 
   /* ── anatomical point cloud ──────────────────────────────────
      x = left/right, y = up/down, z = anterior(+)/posterior(-).
-     Cerebrum, cerebellum and brainstem are sampled separately;
-     the major fissures and the sulci are carved out of the field
-     so they stay dark, which is what makes it read as a brain. */
+     The solid is lofted from two silhouettes rather than deformed out of a
+     sphere: a lateral outline (frontal pole, parietal vertex, occipital
+     taper, temporal lobe under the lateral fissure) and a superior
+     half-width profile (narrow at the frontal poles, widest behind centre).
+     A sphere has no lobes to find, so no amount of displacement recovers
+     them; taking both views gives the side and top reads at once.
+     Cerebellum and brainstem are sampled separately, and the fissures and
+     sulci are carved out of the field so they stay dark. */
   const LOW = innerWidth < 900 || matchMedia('(hover:none)').matches;
   const pos=[], seed=[], size=[], part=[];
 
   const sstep=(a,b,t)=>{const v=Math.min(1,Math.max(0,(t-a)/(b-a)));return v*v*(3-2*v);};
   const bump=(t,w)=>Math.exp(-.5*(t/w)*(t/w));
-  const sulcus=(x,y,z,f,w)=>{
-    const ax=x+w*Math.sin(1.9*z+.8)+.30*Math.sin(2.7*y+1.9);
-    const ay=y+w*Math.sin(2.1*x+2.1)+.30*Math.sin(1.8*z+.4);
-    const az=z+w*Math.sin(1.7*y+4.0)+.30*Math.sin(2.3*x+3.1);
-    return .62*Math.sin(f*ax)+.62*Math.sin(f*.88*az+1.1)+.52*Math.sin(f*1.06*ay+2.2);
+  const CY=.08;                                     // the brain's own centre height
+  /* The gyral field: sulci are its zero set. Two things decide whether this
+     reads as a brain or as texture. Spacing — the folds must be small
+     against the whole, or the "convolutions" are two giant creases. And
+     direction — three equal waves give an egg-carton of blobs, so instead
+     one dominant band runs round the antero-posterior axis, which is the
+     way gyri actually lie: long stripes front to back, wrapping over the
+     vertex to the midline. The rest only bends them. A weaker cross wave
+     interrupts the stripes here and there, so it is convolution and not
+     corduroy, and the threshold is eased toward the poles where the bands
+     converge and would otherwise pinch shut. */
+  const fold=(x,y,z)=>{
+    const th=Math.atan2(y-CY,x);
+    const ph=13.0*th
+      +1.45*Math.sin(3.2*z+.7)
+      +1.10*Math.sin(2.6*(y-CY)+2.1)
+      + .55*Math.sin(5.1*z+1.9)
+      + .45*Math.sin(4.4*x+.3);
+    return Math.sin(ph)
+      +.62*Math.sin(8.2*z+1.7*th+.9)          // cross sulci break the bands...
+      +.50*Math.sin(7.4*x+2.2*th+2.3);        // ...so they branch instead of ribbing
   };
-  const push=(x,y,z,k)=>{ pos.push(x,y,z); seed.push(Math.random());
-    size.push((k===0?1.15:1.0)+Math.random()*1.5); part.push(k); };
+  const foldW=(x,y,z)=>{                            // gradient-corrected magnitude
+    const r=Math.hypot(x,y-CY);
+    return Math.abs(fold(x,y,z))*Math.min(1,Math.max(.45,r/.62));
+  };
+  const nrm=[], gyr=[];
+  const push=(x,y,z,k,nx,ny,nz,gy)=>{ pos.push(x,y,z); seed.push(Math.random());
+    size.push((k===0?1.15:1.0)+Math.random()*1.5); part.push(k);
+    nrm.push(nx,ny,nz); gyr.push(gy===undefined?1:gy); };
 
-  /* cerebrum */
-  const NC = LOW?2300:4200, GA=Math.PI*(1+Math.sqrt(5));
+  /* lateral silhouette, traced clockwise from the frontal pole; the last
+     nine points run back along the lateral fissure and the orbital surface */
+  const PROF=[[1.00,.10],[.94,.38],[.82,.58],[.64,.72],[.42,.80],[.16,.82],
+    [-.12,.80],[-.40,.72],[-.64,.58],[-.84,.36],[-.95,.12],[-1.00,-.10],
+    [-.96,-.28],[-.84,-.40],[-.66,-.45],[-.48,-.51],[-.28,-.56],[-.06,-.61],
+    [.18,-.63],[.40,-.59],[.58,-.48],[.66,-.34],
+    [.60,-.26],[.42,-.21],[.22,-.18],[.04,-.17],
+    [.12,-.11],[.34,-.12],[.56,-.14],[.76,-.10],[.92,.00]];
+  const NPF=PROF.length;
+  function inProf(z,y){
+    let c=false;
+    for(let i=0,j=NPF-1;i<NPF;j=i++){
+      const zi=PROF[i][0],yi=PROF[i][1],zj=PROF[j][0],yj=PROF[j][1];
+      if((yi>y)!==(yj>y) && z<(zj-zi)*(y-yi)/(yj-yi)+zi) c=!c;
+    }
+    return c;
+  }
+  /* superior silhouette: half-width along the length */
+  const WID=[[1.00,.33],[.80,.51],[.60,.64],[.35,.74],[.10,.80],
+    [-.15,.84],[-.40,.83],[-.62,.74],[-.80,.57],[-.92,.38],[-1.00,.20]];
+  function halfW(z){
+    if(z>=WID[0][0]) return WID[0][1];
+    for(let i=1;i<WID.length;i++) if(z>=WID[i][0]){
+      const a=WID[i-1],b=WID[i];
+      return b[1]+(a[1]-b[1])*((z-b[0])/(a[0]-b[0]));
+    }
+    return WID[WID.length-1][1];
+  }
+  /* coronal taper: a dome, widest through the temporal lobes rather than mid-height */
+  const vTap=y=>{
+    const yn=Math.min(1,Math.max(0,(y+.62)/1.44));
+    return .34+.66*Math.pow(Math.sin(Math.PI*Math.pow(yn,.60)),.58);
+  };
+  const inCereb=(x,y,z)=>{
+    if(!inProf(z,y)) return false;
+    if(Math.abs(x)>halfW(z)*vTap(y)) return false;
+    if(Math.abs(x)<.040 && y>.02) return false;      // longitudinal fissure
+    return true;
+  };
+
+  /* cerebrum: march each direction in from outside, so the first crossing
+     wins and concavities like the lateral fissure survive */
+  const NC = LOW?6200:13000, GA=Math.PI*(1+Math.sqrt(5));
   for(let i=0;i<NC;i++){
     const t=(i+.5)/NC, phi=Math.acos(1-2*t), th=GA*i;
-    const ux=Math.sin(phi)*Math.cos(th), uy=Math.cos(phi), uz=Math.sin(phi)*Math.sin(th);
-    const zn=uz;
+    const dx=Math.sin(phi)*Math.cos(th), dy=Math.cos(phi), dz=Math.sin(phi)*Math.sin(th);
+    let r=1.42, prev=r, found=false;
+    for(let k=0;k<54;k++){
+      if(inCereb(dx*r,CY+dy*r,dz*r)){ found=true; break; }
+      prev=r; r-=.027; if(r<=.05) break;
+    }
+    if(!found) continue;
+    let lo=r, hi=prev;
+    for(let k=0;k<7;k++){ const m=(lo+hi)*.5;
+      if(inCereb(dx*m,CY+dy*m,dz*m)) lo=m; else hi=m; }
+    const x=dx*lo, y=CY+dy*lo, z=dz*lo;
 
-    /* superellipsoid profile — blunt poles, not a lens */
-    const rho=Math.hypot(ux,uy)||1e-6;
-    const R=Math.pow(Math.max(0,1-Math.pow(Math.abs(zn),3.6)),1/2.5);
-    let x=ux/rho*R, y=uy/rho*R, z=zn*1.22;
-
-    const wid=1-.34*Math.pow(Math.max(0,zn),1.8)-.36*Math.pow(Math.max(0,-zn),2.2);
-    x*=wid;
-    const hgt=.86*(1-.14*Math.pow(Math.max(0,zn),2.2)-.26*Math.pow(Math.max(0,-zn),2.4));
-    y*=hgt;
-    y-=.13*Math.pow(Math.max(0,-zn),2.2);        // occipital pole sits low
-    y+=.05*bump(zn-.25,.55);                     // vertex forward of centre
-
-    /* skull base: temporal lobe hangs lowest, the back lifts for the cerebellum */
-    const floor=-.40-.30*bump(zn-.18,.46)+.46*sstep(-.32,-.95,zn)+.16*sstep(.55,1,zn);
-    if(y<floor) y=floor+(y-floor)*.30;
-
-    /* sylvian fissure — the diagonal cleft above each temporal lobe */
-    const lat=sstep(.30,.74,Math.abs(x));
-    const fy=-.06-.21*zn;
-    const win=sstep(-.52,-.22,zn)*sstep(.82,.48,zn);
-    const dF=(y-fy)/.055, cleft=Math.exp(-.5*dF*dF)*lat*win;
-    if(cleft>.55) continue;
-    x-=Math.sign(x||1)*cleft*.20;
-    x+=Math.sign(x||1)*sstep(0,-.26,y-fy)*lat*win*.07;
-
-    /* longitudinal fissure — hemispheres split down the midline */
-    const nearMid=Math.max(0,1-Math.abs(x)/.13)*sstep(-.30,.40,y/Math.max(.2,hgt));
-    if(nearMid>.70) continue;
-    x+=Math.sign(x||1)*nearMid*.14; y-=nearMid*.13;
-
-    /* gyri — carve the sulcal zero-set out and sink its shoulders */
-    const g=Math.max(0,1-Math.abs(sulcus(x,y,z,5.0,.55))/.46);
-    if(g>.58) continue;
-    const L=Math.hypot(x,y,z)||1, d=-.10*g;
-    push(x+x/L*d, y+y/L*d, z+z/L*d, 0);
+    const f=foldW(x,y,z);
+    if(f<.54) continue;                       // the sulcus itself stays empty
+    const gy=Math.min(1,(f-.54)/.85);         // 0 at the sulcal wall, 1 at the crown
+    const d=-.072*(1-gy);                     // shoulders fall away into the groove
+    push(x+dx*d, y+dy*d, z+dz*d, 0, dx,dy,dz, gy);
   }
 
-  /* cerebellum — flattened, with fine parallel folia and a vermis groove */
-  const NB = LOW?420:780, by=-.46, bz=-.56;
+  /* a sparse interior so the volume does not read as a hollow shell; kept
+     back from the boundary so it never doubles as a second surface */
+  const NI = LOW?600:1000;
+  for(let i=0,tries=0;i<NI && tries<NI*16;tries++){
+    const x=(Math.random()*2-1)*.88, y=-.66+Math.random()*1.52, z=(Math.random()*2-1)*1.04;
+    if(!inCereb(x,y,z)) continue;
+    const L=Math.hypot(x,y-CY,z)||1, k=.09/L;
+    if(!inCereb(x+x*k,y+(y-CY)*k,z+z*k)) continue;
+    push(x,y,z,3, x/L,(y-CY)/L,z/L, 1); i++;
+  }
+
+  /* cerebellum — wider than tall, fine parallel folia, vermis down the middle */
+  const NB = LOW?560:820, by=-.50, bz=-.66;
   for(let i=0;i<NB;i++){
     const t=(i+.5)/NB, phi=Math.acos(1-2*t), th=GA*i;
-    let x=Math.sin(phi)*Math.cos(th)*.51, y=Math.cos(phi)*.29, z=Math.sin(phi)*Math.sin(th)*.37;
-    if(y>0) y*=.62;
-    z-=.06*(1-Math.abs(x)/.51);
-    y-=.06*Math.max(0,1-Math.abs(x)/.30);
-    const gf=Math.max(0,1-Math.abs(Math.sin(16*(y+.10*z)+.4))/.55);
-    if(gf>.60) continue;
-    if(Math.max(0,1-Math.abs(x)/.08)>.7) continue;
-    const L=Math.hypot(x,y,z)||1, d=-.05*gf;
-    push(x+x/L*d, y+y/L*d+by, z+z/L*d+bz, 1);
+    let x=Math.sin(phi)*Math.cos(th)*.46, y=Math.cos(phi)*.29, z=Math.sin(phi)*Math.sin(th)*.32;
+    if(y>0) y*=.60;                                   // flat on top, under the tentorium
+    z-=.05*(1-Math.abs(x)/.46);
+    const ff=Math.abs(Math.sin(24*(y+.10*z)+.4));     // folia, finer than the gyri
+    if(ff<.34) continue;
+    if(Math.abs(x)<.055) continue;                    // vermis groove
+    const L=Math.hypot(x,y,z)||1, d=-.030*(1-ff);
+    push(x+x/L*d, y+y/L*d+by, z+z/L*d+bz, 1, x/L,y/L,z/L, Math.min(1,(ff-.34)/.55));
   }
 
-  /* brainstem */
-  const NS = LOW?140:240, rings=30;
+  /* brainstem — midbrain into the pons bulge, then the medulla */
+  const NS = LOW?170:300, rings=30;
   for(let i=0;i<NS;i++){
     const v=(i%rings)/rings, k=Math.floor(i/rings), th=i*2.399963+k*.7;
-    const r=.185-.085*v-.035*bump(v-.34,.16);
-    push(Math.cos(th)*r, -.24-.68*v, -.26-.18*v*v+Math.sin(th)*r*.85, 2);
+    const r=.135+.075*bump(v-.30,.17)-.055*v;
+    push(Math.cos(th)*r, -.30-.72*v, -.24-.14*v*v+Math.sin(th)*r*.85, 2, Math.cos(th),0,Math.sin(th), .72);
   }
-
   const N=part.length;
   const P=new Float32Array(pos);
   const g=new THREE.BufferGeometry();
@@ -678,11 +738,13 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   g.setAttribute('aSeed',new THREE.BufferAttribute(new Float32Array(seed),1));
   g.setAttribute('aSize',new THREE.BufferAttribute(new Float32Array(size),1));
   g.setAttribute('aPart',new THREE.BufferAttribute(new Float32Array(part),1));
+  g.setAttribute('aNrm',new THREE.BufferAttribute(new Float32Array(nrm),3));
+  g.setAttribute('aGyr',new THREE.BufferAttribute(new Float32Array(gyr),1));
 
   const U={uTime:{value:0},uPtr:{value:new THREE.Vector3(9,9,9)},uDpr:{value:1},uFade:{value:1}};
   const pts=new THREE.Points(g,new THREE.ShaderMaterial({
     transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:U,
-    vertexShader:`attribute float aSeed;attribute float aSize;attribute float aPart;uniform float uTime;uniform vec3 uPtr;uniform float uDpr;varying float vG;varying float vP;
+    vertexShader:`attribute float aSeed;attribute float aSize;attribute float aPart;uniform float uTime;uniform vec3 uPtr;uniform float uDpr;attribute vec3 aNrm;attribute float aGyr;varying float vG;varying float vP;varying float vD;varying float vR;varying float vY;
       void main(){vec3 p=position*(1.0+sin(uTime*.9+aSeed*6.283)*.012);
         vec4 wp=modelMatrix*vec4(p,1.0);
         float d=distance(wp.xyz,uPtr);
@@ -690,20 +752,30 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
         float wave=sin(uTime*1.6-length(p)*5.0)*.5+.5;
         vG=glow*1.15+wave*.13; vP=aPart;
         vec4 mv=viewMatrix*wp;
-        gl_PointSize=aSize*(1.0+glow*1.9)*uDpr*(14.0/-mv.z);
+        vec3 wn=normalize(mat3(modelMatrix)*aNrm);
+        float face=dot(wn,normalize(cameraPosition-wp.xyz));
+        vD=clamp(face*.5+.5,0.0,1.0);
+        vR=pow(1.0-abs(face),3.5); vY=aGyr;
+        float inr=step(2.5,aPart);
+        gl_PointSize=aSize*(.62+vD*.66)*(.70+vY*.60)*(1.0+vR*.30)*(1.0-inr*.46)*(1.0+glow*1.7)*uDpr*(13.0/-mv.z);
         gl_Position=projectionMatrix*mv;}`,
-    fragmentShader:`varying float vG;varying float vP;uniform float uFade;
+    fragmentShader:`varying float vG;varying float vP;varying float vD;varying float vR;varying float vY;uniform float uFade;
       void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;
-        float a=smoothstep(.5,.06,d);
-        vec3 base=mix(vec3(.42,.62,.90),vec3(.26,.45,.78),step(.5,vP));
-        vec3 c=mix(base,vec3(1.0,.32,.18),clamp(vG,0.,1.));
-        gl_FragColor=vec4(c,a*(.34+vG*.95)*uFade);}`
+        float a=exp(-d*d*36.0)+exp(-d*d*9.0)*.17;
+        vec3 near=mix(vec3(.78,.90,1.0),vec3(.60,.79,1.0),step(.5,vP));
+        vec3 far =mix(vec3(.17,.28,.56),vec3(.14,.25,.50),step(.5,vP));
+        vec3 c=mix(far,near,vD);
+        c+=vec3(.58,.76,1.0)*vR*.32;                  // rim traces the outline
+        c*=(.52+vY*1.00);                             // crowns lit, sulcal walls dark
+        c=mix(c,vec3(1.0,.32,.18),clamp(vG,0.,1.));
+        float inr=step(2.5,vP);
+        gl_FragColor=vec4(c,a*mix(.18,1.0,vD)*(.80+vR*.30)*(.40+vY*.88)*(.72+vG*.85)*(1.0-inr*.66)*uFade);}`
   }));
   grp.add(pts);
 
   /* synapses: link each point to its 2 nearest neighbours, but only within
      a short radius so the fissures and sulci are never bridged */
-  const CELL=.15, MAXD=.12, grid=new Map();
+  const CELL=.09, MAXD=.062, grid=new Map();
   const cid=(a,b,c)=>a*73856093^b*19349663^c*83492791;
   for(let i=0;i<N;i++){
     const k=cid(Math.floor(P[i*3]/CELL),Math.floor(P[i*3+1]/CELL),Math.floor(P[i*3+2]/CELL));
@@ -736,23 +808,9 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
         gl_Position=projectionMatrix*viewMatrix*wp;}`,
     fragmentShader:`varying float vG;uniform float uFade;
       void main(){vec3 c=mix(vec3(.30,.44,.72),vec3(1.0,.36,.2),clamp(vG,0.,1.));
-        gl_FragColor=vec4(c,(.055+vG*.5)*uFade);}`
+        gl_FragColor=vec4(c,(.032+vG*.40)*uFade);}`
   }));
   grp.add(lines);
-
-  /* depth electrode — the red lead from the mark, threaded through the cortex */
-  const lead=new THREE.Group();
-  const wire=new THREE.Mesh(new THREE.CylinderGeometry(.011,.011,3.5,8),
-    new THREE.MeshBasicMaterial({color:0xff4a2b,transparent:true,opacity:.8}));
-  wire.position.y=.28; lead.add(wire);
-  const tip=new THREE.Mesh(new THREE.SphereGeometry(.082,20,20),new THREE.MeshBasicMaterial({color:0xff4a2b}));
-  tip.position.y=.22; lead.add(tip);
-  const halo=new THREE.Mesh(new THREE.SphereGeometry(.30,20,20),
-    new THREE.MeshBasicMaterial({color:0xff4a2b,transparent:true,opacity:.14,blending:THREE.AdditiveBlending}));
-  halo.position.y=.22; lead.add(halo);
-  const cap=new THREE.Mesh(new THREE.SphereGeometry(.055,16,16),new THREE.MeshBasicMaterial({color:0xff4a2b}));
-  cap.position.y=-1.42; lead.add(cap);
-  lead.position.set(.14,0,.46); grp.add(lead);
 
   /* pointer → world point on the plane the brain sits in */
   const ptr=new THREE.Vector3(9,9,9), want=new THREE.Vector3(9,9,9);
@@ -767,32 +825,36 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   },{passive:true});
   addEventListener('pointerleave',()=>{active=false;want.set(9,9,9)});
 
+  let baseY=.12, dim=1;
   function resize(){ const w=host.clientWidth,h=host.clientHeight;
     cam.aspect=w/h; cam.updateProjectionMatrix(); rnd.setSize(w,h,false);
     const dpr=Math.min(devicePixelRatio,2); rnd.setPixelRatio(dpr); U.uDpr.value=dpr;
-    const narrow=w<820; grp.position.x=narrow?0:1.55; grp.scale.setScalar(narrow?1.05:1.42);
+    const narrow=w<820;
+    grp.position.x=narrow?0:1.82; baseY=narrow?-.34:.12;
+    grp.scale.setScalar(narrow?1.05:1.68); dim=narrow?.62:1;
   }
   addEventListener('resize',resize); resize();
 
-  const clock=new THREE.Clock(); let sc=0, spin=0, ox=0, oy=0;
+  const clock=new THREE.Clock(); let sc=0, spin=0, ox=0, oy=0, last=0;
   addEventListener('scroll',()=>{ sc=Math.min(scrollY/innerHeight,1.2); },{passive:true});
+
+  /* opens square on the lateral view, holds a beat, then eases into the turn */
+  const LAT=-Math.PI/2, HOLD=1.15, EASE=2.2;
 
   (function loop(){
     requestAnimationFrame(loop);
     const t=clock.getElapsedTime(); U.uTime.value=t;
+    const dt=Math.min(t-last,.05); last=t;
     ptr.lerp(want,.12); U.uPtr.value.copy(ptr);
-    spin += RM?0:.0016;
+    const e=Math.min(1,Math.max(0,(t-HOLD)/EASE));
+    spin += RM?0:dt*.096*(e*e*(3-2*e));          // rad/s, ramped in after the hold
     oy += (ty-oy)*.05; ox += (tx-ox)*.05;
-    grp.rotation.y = -.72 + spin + oy + sc*.55;   // opens on a 3/4 lateral view
+    grp.rotation.y = LAT + spin + oy + sc*.55;
     grp.rotation.x = -.10 + ox + sc*.12;
     grp.rotation.z = -.04 + Math.sin(t*.25)*.045;
-    grp.position.y = .12 - sc*1.5 + Math.sin(t*.5)*.05;
+    grp.position.y = baseY - sc*1.5 + Math.sin(t*.5)*.05;
     U.uFade.value = Math.max(0,1-sc*1.05);
-    host.style.opacity = U.uFade.value;
-    const pulse=(Math.sin(t*2.4)*.5+.5);
-    halo.scale.setScalar(1+pulse*.5); halo.material.opacity=.06+pulse*.14;
-    tip.scale.setScalar(1+pulse*.18);
-    lead.rotation.z=Math.sin(t*.6)*.04;
+    host.style.opacity = U.uFade.value*dim;
     if(U.uFade.value>0.01) rnd.render(scene,cam);
   })();
 })();
