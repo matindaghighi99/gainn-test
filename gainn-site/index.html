@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GAINN</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;700&family=Instrument+Sans:wght@400..700&display=swap">
 <style>
 :root{
   --ink:#06090E; --band:#080C12; --card:#0C1119; --card-2:#0E141D; --raised:#0F1620;
   --field:#070B10; --footer:#04070A;
-  --navy:#1E3765; --blue:#7CA6E2; --link:#A8C6F0; --red:#FF4A2B; --red-2:#FF8A73;
+  --navy:#1E3765; --blue:#84A2DA; --link:#B0C4E8; --red:#FF4A2B; --red-2:#FF8A73;
   /* third brand colour: U of T blue, lifted into two tints that hold up on the dark ground */
   --uoft:#002A5C; --uoft-mid:#3F6FC4; --uoft-lift:#A9C8F2;
   --tx:#EDF2F9; --tx-strong:#F6F9FD; --tx-body:#A9B6C8; --tx-mute:#8B99AD; --tx-faint:#6E7E93; --tx-ghost:#55637A;
-  --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14); --line-blue:rgba(124,166,226,.24);
+  --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.14); --line-blue:rgba(132,162,218,.24);
   --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
   --sans:'Instrument Sans',system-ui,-apple-system,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,monospace;
@@ -36,7 +36,7 @@ p{margin:0}
 
 /* ── type ─────────────────────────────────────── */
 .display{font-size:clamp(42px,6.4vw,92px);line-height:1.02;letter-spacing:-.018em;color:var(--tx-strong)}
-.h2{font-size:clamp(38px,5.9vw,84px);line-height:1.01;letter-spacing:-.024em;text-wrap:balance;
+.h2{font-size:clamp(34px,5.2vw,72px);line-height:1.03;letter-spacing:-.022em;text-wrap:balance;
   color:var(--uoft-mid);
   background:linear-gradient(176deg,var(--uoft-lift) 0%,#6E9DE4 40%,#3565B8 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -44,9 +44,9 @@ p{margin:0}
 .ttl{font-family:var(--sans);font-weight:600;font-size:19px;line-height:1.3;letter-spacing:-.018em;color:var(--tx)}
 .lede{font-size:clamp(17px,1.35vw,19px);line-height:1.62;color:var(--tx-body)}
 .body{font-size:15px;line-height:1.68;color:var(--tx-mute)}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
+.eyebrow{font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
 .micro{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx-faint)}
-.it{font-style:italic;color:#9EC0EE}
+.it{font-style:italic;color:#A7BDE5}
 
 /* ── layout ───────────────────────────────────── */
 .shell{width:var(--shell);margin:0 auto}
@@ -90,12 +90,12 @@ nav.on .bar{height:64px}
 .btn-1:hover{box-shadow:0 12px 40px -12px rgba(255,74,43,.75)}
 .btn-2{border-color:rgba(255,255,255,.18);color:#E6EDF7;background:transparent}
 .btn-2::before{background:rgba(255,255,255,.08)}
-.btn-2:hover{border-color:rgba(124,166,226,.6)}
+.btn-2:hover{border-color:rgba(132,162,218,.6)}
 .btn-3{height:48px;padding:0 22px;font-size:13.5px;font-weight:500;border-color:var(--line-2);color:#E2EAF6;background:transparent}
-.btn-alt{border:1px dashed rgba(124,166,226,.45);color:var(--link);background:transparent;font-weight:500}
-.btn-alt::before{background:rgba(124,166,226,.12)}
-.btn-alt:hover{border-color:rgba(124,166,226,.85);color:#FFFFFF}
-.btn-3::before{background:rgba(124,166,226,.14)}
+.btn-alt{border:1px dashed rgba(132,162,218,.45);color:var(--link);background:transparent;font-weight:500}
+.btn-alt::before{background:rgba(132,162,218,.12)}
+.btn-alt:hover{border-color:rgba(132,162,218,.85);color:#FFFFFF}
+.btn-3::before{background:rgba(132,162,218,.14)}
 .btn:active{transform:scale(.97)}
 
 /* ── hero ─────────────────────────────────────── */
@@ -108,7 +108,7 @@ nav.on .bar{height:64px}
     linear-gradient(90deg,rgba(6,9,14,.93) 0%,rgba(6,9,14,.78) 26%,rgba(6,9,14,.30) 44%,rgba(6,9,14,0) 56%)}
 .grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.10;z-index:2}
 .hero-in{position:relative;z-index:3;max-width:660px}
-.tag{display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 16px 0 12px;border:1px solid rgba(124,166,226,.3);border-radius:999px;background:rgba(30,55,101,.24);backdrop-filter:blur(6px)}
+.tag{display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 16px 0 12px;border:1px solid rgba(132,162,218,.3);border-radius:999px;background:rgba(30,55,101,.24);backdrop-filter:blur(6px)}
 .tag span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--link)}
 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
 .w i{display:inline-block;font-style:inherit;transform:translateY(110%);transition:transform 1s var(--ease);transition-delay:var(--d)}
@@ -116,6 +116,8 @@ nav.on .bar{height:64px}
 .hero-sub{display:flex;gap:22px;margin-top:30px;max-width:520px}
 .hero-sub .bar-r{width:52px;height:1px;background:rgba(255,74,43,.9);margin-top:14px;flex:none}
 .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
+.hero-logos{display:flex;align-items:center;gap:34px;margin-top:88px;flex-wrap:wrap}
+.hero-logos img{height:176px;width:auto;display:block}
 .stats{display:flex;gap:44px;margin-top:56px;flex-wrap:wrap}
 .stat b{display:block;font-family:var(--serif);font-weight:400;font-size:42px;line-height:1;letter-spacing:-.012em;color:var(--tx-strong);font-variant-numeric:tabular-nums}
 .stat i{display:block;margin-top:9px;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx-faint)}
@@ -138,8 +140,8 @@ nav.on .bar{height:64px}
   font-size:14px;font-weight:500;letter-spacing:-.008em;color:#CBD7E6;
   transition:border-color .45s var(--ease),color .45s var(--ease),background .45s var(--ease),transform .45s var(--ease)}
 .track i::before{content:"";flex:none;width:28px;height:28px;border-radius:9px;border:1px dashed rgba(255,255,255,.22);
-  background:linear-gradient(140deg,rgba(124,166,226,.20),rgba(255,74,43,.08))}
-.track i:hover{border-color:rgba(124,166,226,.55);color:#FFFFFF;background:var(--raised);transform:translateY(-2px)}
+  background:linear-gradient(140deg,rgba(132,162,218,.20),rgba(255,74,43,.08))}
+.track i:hover{border-color:rgba(132,162,218,.55);color:#FFFFFF;background:var(--raised);transform:translateY(-2px)}
 @keyframes slide{to{transform:translateX(-25%)}}
 
 /* ── cards ────────────────────────────────────── */
@@ -148,8 +150,8 @@ nav.on .bar{height:64px}
 .g4{grid-template-columns:repeat(4,1fr)}
 .g5{grid-template-columns:repeat(5,1fr)}
 .card{position:relative;padding:30px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,var(--card-2),#0A0F16);overflow:hidden;transition:transform .5s var(--ease),border-color .5s,box-shadow .5s var(--ease)}
-.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .5s;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(124,166,226,.13),transparent 60%)}
-.card:hover{transform:translateY(-6px);border-color:rgba(124,166,226,.34);box-shadow:0 26px 60px -32px rgba(0,0,0,.9)}
+.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .5s;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(132,162,218,.13),transparent 60%)}
+.card:hover{transform:translateY(-6px);border-color:rgba(132,162,218,.34);box-shadow:0 26px 60px -32px rgba(0,0,0,.9)}
 .card:hover::before{opacity:1}
 .card>*{position:relative}
 .card .ic{width:30px;height:30px;color:var(--blue);transition:transform .5s var(--ease)}
@@ -167,8 +169,8 @@ nav.on .bar{height:64px}
 .step:last-child{padding-bottom:0}
 .step em{position:absolute;left:-44px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(255,74,43,.13);transition:box-shadow .5s,transform .5s var(--ease)}
 .step:hover em{transform:scale(1.25);box-shadow:0 0 0 9px rgba(255,74,43,.1)}
-.chip{display:inline-flex;align-items:center;height:27px;padding:0 12px;margin-top:13px;border:1px solid rgba(124,166,226,.3);border-radius:999px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--link);transition:.4s}
-.step:hover .chip{border-color:rgba(124,166,226,.6);background:rgba(124,166,226,.08)}
+.chip{display:inline-flex;align-items:center;height:27px;padding:0 12px;margin-top:13px;border:1px solid rgba(132,162,218,.3);border-radius:999px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--link);transition:.4s}
+.step:hover .chip{border-color:rgba(132,162,218,.6);background:rgba(132,162,218,.08)}
 .panel{padding:30px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,var(--card-2),#0A0F16)}
 .panel.hot{border-color:rgba(255,74,43,.32);background:#120F0E}
 .panel .row{display:flex;align-items:baseline;gap:14px;padding:13px 0;border-top:1px solid rgba(255,255,255,.07);font-size:13.5px;color:#C3CEDD}
@@ -176,26 +178,32 @@ nav.on .bar{height:64px}
 .panel .row u{text-decoration:none;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--tx-faint);flex:none}
 .panel .row b{flex:1;font-weight:500;color:#D5E1F0}
 .panel .row i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);white-space:nowrap}
-.seam{position:absolute;top:0;left:26px;right:26px;height:1px;background:linear-gradient(90deg,transparent,rgba(124,166,226,.55),transparent)}
+.seam{position:absolute;top:0;left:26px;right:26px;height:1px;background:linear-gradient(90deg,transparent,rgba(132,162,218,.55),transparent)}
 
 /* ── news + events ────────────────────────────── */
 .feat{display:grid;grid-template-columns:1.25fr 1fr;gap:32px}
 .shot{position:relative;height:250px;background:#090E15;border-bottom:1px solid var(--line);overflow:hidden}
 .shot svg{position:absolute;inset:0;width:100%;height:100%}
 .pill{display:inline-flex;align-items:center;height:27px;padding:0 12px;border-radius:999px;background:rgba(255,74,43,.18);color:var(--red-2);font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase}
-.item{display:flex;gap:18px;padding:22px 0;border-top:1px solid var(--line);transition:.45s var(--ease)}
+.item{position:relative;display:flex;gap:18px;padding:22px 0 22px 16px;margin-left:-16px;border-top:1px solid var(--line);border-radius:12px;transition:.45s var(--ease)}
 .item:first-child{border-top:0;padding-top:0}
+.item[data-i]{cursor:pointer}
 .item:hover{transform:translateX(6px)}
+.item.active{background:linear-gradient(90deg,rgba(132,162,218,.10),transparent 70%)}
+.item.active::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:2px;border-radius:2px;background:var(--blue)}
+.item:first-child.active::before{top:0}
 .thumb{width:74px;height:74px;flex:none;border-radius:15px;background:var(--raised);border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;transition:.45s}
-.item:hover .thumb{border-color:rgba(124,166,226,.4)}
+.item:hover .thumb{border-color:rgba(132,162,218,.4)}
+.item.active .thumb{border-color:rgba(132,162,218,.55)}
+.item.active .nHead{color:var(--blue)}
 .tabs{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:999px}
 .tab{height:42px;padding:0 22px;border:0;border-radius:999px;background:transparent;color:var(--tx-body);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;transition:.4s var(--ease)}
 .tab[aria-selected="true"]{background:var(--blue);color:#0A0D12}
 .ev{display:flex;align-items:center;gap:28px;padding:26px 6px;border-top:1px solid var(--line);transition:.45s var(--ease)}
 .ev:last-child{border-bottom:1px solid var(--line)}
-.ev:hover{padding-left:16px;background:linear-gradient(90deg,rgba(124,166,226,.05),transparent)}
-.date{width:88px;flex:none;padding:13px 0;border:1px solid rgba(124,166,226,.28);border-radius:15px;text-align:center;transition:.45s}
-.ev:hover .date{border-color:rgba(124,166,226,.6);background:rgba(124,166,226,.06)}
+.ev:hover{padding-left:16px;background:linear-gradient(90deg,rgba(132,162,218,.05),transparent)}
+.date{width:88px;flex:none;padding:13px 0;border:1px solid rgba(132,162,218,.28);border-radius:15px;text-align:center;transition:.45s}
+.ev:hover .date{border-color:rgba(132,162,218,.6);background:rgba(132,162,218,.06)}
 .date b{display:block;font-family:var(--serif);font-weight:300;font-size:29px;line-height:1.2;color:var(--tx-strong)}
 .fade{animation:fade .5s var(--ease)}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}}
@@ -207,18 +215,29 @@ nav.on .bar{height:64px}
 .person{padding:0;overflow:hidden}
 .person .pad{padding:22px}
 .ico{width:42px;height:42px;border:1px solid var(--line-2);border-radius:50%;display:grid;place-items:center;transition:.4s var(--ease)}
-.ico:hover{border-color:var(--blue);background:rgba(124,166,226,.1);transform:translateY(-2px)}
+.ico:hover{border-color:var(--blue);background:rgba(132,162,218,.1);transform:translateY(-2px)}
 .slot{border-style:dashed;display:grid;place-items:center;align-content:center;gap:12px;min-height:380px;background:#080D14}
 
 /* ── forms ────────────────────────────────────── */
 label{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx-mute)}
 input[type=text],input[type=email],textarea{width:100%;padding:0 16px;height:52px;border:1px solid var(--line-2);border-radius:12px;background:var(--field);color:var(--tx);font-family:var(--sans);font-size:15px;transition:.35s}
 textarea{height:auto;padding:14px 16px;line-height:1.7;resize:vertical}
-input:focus,textarea:focus{outline:0;border-color:rgba(124,166,226,.65);box-shadow:0 0 0 4px rgba(124,166,226,.1)}
+input:focus,textarea:focus{outline:0;border-color:rgba(132,162,218,.65);box-shadow:0 0 0 4px rgba(132,162,218,.1)}
 .fld{display:flex;flex-direction:column;gap:10px}
 
 /* ── footer ───────────────────────────────────── */
 footer{position:relative;background:var(--footer);border-top:1px solid var(--line);overflow:hidden}
+.foot-partners{position:relative;padding:64px 0 54px;border-bottom:1px solid var(--line);overflow:hidden;text-align:center}
+.foot-partners::before{content:"";position:absolute;left:50%;top:-140px;width:680px;height:340px;transform:translateX(-50%);
+  background:radial-gradient(closest-side,rgba(30,55,101,.55),rgba(30,55,101,0) 72%);pointer-events:none}
+.foot-partners-row{position:relative;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.foot-partners-row img{height:84px;width:auto;display:block;filter:drop-shadow(0 0 22px rgba(30,55,101,.5))}
+.foot-partners-row img.uoft{height:70px}
+.fp-div{flex:none;width:1px;height:54px;background:linear-gradient(var(--footer),var(--line-2) 20%,var(--line-2) 80%,var(--footer))}
+@media(max-width:680px){
+  .foot-partners-row{flex-direction:column;gap:28px}
+  .fp-div{width:60px;height:1px;background:linear-gradient(90deg,var(--footer),var(--line-2) 20%,var(--line-2) 80%,var(--footer))}
+}
 .word{font-family:var(--sans);font-weight:600;font-size:clamp(88px,17vw,238px);line-height:.8;letter-spacing:.05em;color:#0B0F16;text-align:center;user-select:none}
 .fgrid{display:grid;grid-template-columns:1.4fr .9fr 1.2fr;gap:52px}
 
@@ -234,6 +253,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .links,.brand .sub,.hint{display:none}
   .g3,.g4,.g5{grid-template-columns:1fr}
   .stats{gap:28px}
+  .hero-logos img{height:96px}
   .ev{flex-wrap:wrap;gap:18px}
   .mq{flex-direction:column;align-items:flex-start;gap:16px;padding:26px 0}
   .mq-vp{width:100%;flex:none}
@@ -270,25 +290,22 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   <div class="shell" style="position:relative;z-index:3">
     <div class="hero-in" id="heroIn">
       <h1 class="display" id="hl">
-        <span class="w"><i style="--d:.05s">[Headline</i></span> <span class="w"><i style="--d:.11s">goes</i></span>
-        <span class="w"><i style="--d:.17s">here,</i></span> <span class="w"><i style="--d:.23s">about</i></span>
-        <span class="w"><i style="--d:.29s">ten</i></span> <span class="w"><i style="--d:.35s">words</i></span>
-        <span class="w"><i class="it" style="--d:.41s">across</i></span> <span class="w"><i style="--d:.47s">three</i></span>
-        <span class="w"><i style="--d:.53s">or</i></span> <span class="w"><i style="--d:.59s">four&nbsp;lines]</i></span>
+        <span class="w"><i style="--d:.05s">Potential</i></span> <span class="w"><i class="it" style="--d:.15s">Heading</i></span>
+        <br><span class="w"><i style="--d:.25s;font-size:.36em;letter-spacing:0;color:var(--tx-mute)">your choice of Font/size/color</i></span>
       </h1>
       <div class="hero-sub rv" style="--d:.5s"><span class="bar-r"></span>
         <p class="lede">[Supporting sentence — one or two lines of context under the headline.]</p></div>
       <div class="cta rv" style="--d:.62s">
-        <a href="#program" class="btn btn-1 mag"><span>[Primary action]
+        <a href="#program" class="btn btn-1 mag"><span>Optional 1
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a>
-        <a href="#about" class="btn btn-2 mag"><span>[Secondary action]</span></a>
+        <a href="#about" class="btn btn-2 mag"><span>Optional 2</span></a>
+      </div>
+      <div class="cta rv" style="--d:.68s;margin-top:14px">
         <a href="concept.html" class="btn btn-alt mag"><span>Check other design concept
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
       </div>
-      <div class="stats rv" style="--d:.74s">
-        <div class="stat"><b style="color:var(--tx-faint)">[00]</b><i>[Metric label]</i></div>
-        <div class="stat"><b style="color:var(--tx-faint)">[00]</b><i>[Metric label]</i></div>
-        <div class="stat"><b style="color:var(--tx-faint)">[00]</b><i>[Metric label]</i></div>
+      <div class="hero-logos rv" style="--d:.68s">
+        <img src="gainn-logo-hero.png" alt="GAINN — Graduate Advancement in Neuromodulation &amp; Neurotech">
       </div>
     </div>
   </div>
@@ -364,34 +381,34 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   <div class="head rv"><span class="dot"></span><span class="eyebrow">News</span><span class="rule"></span>
     <a href="#news" class="micro" style="color:var(--link)">View all →</a></div>
   <div class="feat">
-    <article class="card rv" style="padding:0">
+    <article class="card rv" style="padding:0" id="newsFeat">
       <div class="shot">
         <svg viewBox="0 0 640 250" preserveAspectRatio="none" aria-hidden="true">
-          <g stroke="rgba(124,166,226,.22)" fill="none"><path d="M-10 196 L86 132 L176 162 L276 80 L376 126 L476 64 L576 108 L650 62"/>
+          <g stroke="rgba(132,162,218,.22)" fill="none"><path d="M-10 196 L86 132 L176 162 L276 80 L376 126 L476 64 L576 108 L650 62"/>
           <path d="M-10 218 L106 232 L206 206 L316 230 L426 198 L536 220 L650 188"/>
           <path d="M86 132 L106 232 M176 162 L206 206 M276 80 L316 230 M376 126 L426 198"/></g>
-          <g fill="#7CA6E2"><circle cx="86" cy="132" r="3.5"/><circle cx="376" cy="126" r="3.5"/><circle cx="576" cy="108" r="3"/></g>
+          <g fill="#84A2DA"><circle cx="86" cy="132" r="3.5"/><circle cx="376" cy="126" r="3.5"/><circle cx="576" cy="108" r="3"/></g>
           <g fill="#FF4A2B"><circle cx="276" cy="80" r="6"/><circle cx="476" cy="64" r="4.5"/></g>
         </svg>
         <span class="micro" style="position:absolute;left:28px;bottom:20px">[Feature image]</span>
         <span class="pill" style="position:absolute;right:28px;top:22px">Featured</span>
       </div>
-      <div style="padding:34px">
-        <span class="micro" style="letter-spacing:.06em;text-transform:none">[DATE] · [SOURCE]</span>
-        <h3 class="h3" style="margin-top:16px">[Featured headline — up to two lines.]</h3>
-        <p class="body" style="margin-top:16px">[Standfirst — one line.]</p>
-        <a href="#news" style="display:inline-block;margin-top:22px;font-size:14px;font-weight:500">[Read more] →</a>
+      <div style="padding:34px" id="newsFeatBody">
+        <span class="micro" id="nfMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [SOURCE]</span>
+        <h3 class="h3" id="nfHead" style="margin-top:16px">[Featured headline — up to two lines.]</h3>
+        <p class="body" id="nfStand" style="margin-top:16px">[Standfirst — one line.]</p>
+        <a href="#news" style="display:inline-block;margin-top:22px;font-size:14px;font-weight:500">Read more →</a>
       </div>
     </article>
-    <div class="rv" style="--d:.1s">
-      <div class="item"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-      <div class="item"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-      <div class="item"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-      <div class="item" style="opacity:.55"><div class="thumb" style="border-style:dashed"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro" style="letter-spacing:.06em;text-transform:none">[DATE]</span><h3 class="ttl" style="margin-top:6px;font-size:17px;color:var(--tx-faint)">[Add news item]</h3></div></div>
+    <div class="rv" style="--d:.1s" id="newsList">
+      <div class="item" data-i="0"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
+        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
+      <div class="item" data-i="1"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
+        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
+      <div class="item" data-i="2"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
+        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
+      <div class="item" data-i="3"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
+        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
     </div>
   </div>
 </div></section>
@@ -405,14 +422,11 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   </div>
   <div id="up" class="rv">
     <div class="ev"><div class="date"><span class="micro" style="color:var(--blue)">[MON]</span><b>[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div>
-      <a href="#events" class="btn btn-3 mag"><span>Register</span></a></div>
+      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div></div>
     <div class="ev"><div class="date"><span class="micro" style="color:var(--blue)">[MON]</span><b>[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div>
-      <a href="#events" class="btn btn-3 mag"><span>Register</span></a></div>
+      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div></div>
     <div class="ev"><div class="date"><span class="micro" style="color:var(--blue)">[MON]</span><b>[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div>
-      <a href="#events" class="btn btn-3 mag"><span>Register</span></a></div>
+      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div></div>
   </div>
   <div id="past" hidden>
     <div class="ev"><div class="date" style="border-color:var(--line-2)"><span class="micro">[MON]</span><b style="color:#AEBCCE">[00]</b></div>
@@ -475,15 +489,22 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
 
 <!-- ════ FOOTER ════ -->
 <footer>
-  <div class="shell" style="padding:72px 0 44px">
+  <div class="foot-partners rv" style="--d:0s">
+    <div class="foot-partners-row">
+      <img src="gainn-logo-hero.png" alt="GAINN — Graduate Advancement in Neuromodulation &amp; Neurotech">
+      <span class="fp-div"></span>
+      <img class="uoft" src="uoft-crania-logo.png" alt="University of Toronto — CRANIA NeuroModulation Institute">
+    </div>
+  </div>
+  <div class="shell" style="padding:56px 0 44px">
     <div class="fgrid">
       <div>
-        <div style="width:168px;height:56px;border:1px dashed var(--line-2);border-radius:12px;display:grid;place-items:center" class="micro">[Logo]</div>
+        <b style="font-family:var(--sans);font-weight:600;font-size:19px;letter-spacing:.05em;color:var(--tx-strong)">GAINN</b>
         <p style="margin-top:20px;font-size:13.5px;line-height:1.6;color:var(--tx-mute);max-width:280px">[Organisation line]</p>
         <div style="margin-top:22px;display:flex;gap:10px">
-          <a href="#hero" class="ico" aria-label="LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A8C6F0" stroke-width="1.5"><path d="M6 9v10M6 5v.5M11 19v-6a3 3 0 0 1 6 0v6"/></svg></a>
-          <a href="#hero" class="ico" aria-label="X"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A8C6F0" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg></a>
-          <a href="#hero" class="ico" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A8C6F0" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M11 10l4 2-4 2z"/></svg></a>
+          <a href="#hero" class="ico" aria-label="LinkedIn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.5"><path d="M6 9v10M6 5v.5M11 19v-6a3 3 0 0 1 6 0v6"/></svg></a>
+          <a href="#hero" class="ico" aria-label="X"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg></a>
+          <a href="#hero" class="ico" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M11 10l4 2-4 2z"/></svg></a>
         </div>
       </div>
       <div><span class="micro">Partners</span><div style="margin-top:18px;display:flex;flex-direction:column;gap:11px;font-size:13.5px">
@@ -495,7 +516,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
         <button class="btn btn-3 mag" style="width:100%;margin-top:14px"><span>Subscribe</span></button></div>
     </div>
   </div>
-  <div class="shell" style="height:clamp(70px,13vw,166px);overflow:hidden"><div class="word">[NAME]</div></div>
+  <div class="shell" style="height:clamp(70px,13vw,166px);overflow:hidden"><div class="word">GAINN</div></div>
   <div class="shell" style="padding:22px 0 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
     <span style="font-size:12.5px;color:var(--tx-ghost)">© [YEAR] [Organisation]</span>
     <div style="display:flex;gap:22px;font-size:12.5px"><a href="#hero">Privacy</a><a href="#hero">Accessibility</a><a href="#hero">Back to top ↑</a></div>
@@ -507,24 +528,61 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ── repeated content ─────────────────────────── */
-const inst = ['[Partner 01]','[Partner 02]','[Partner 03]','[Partner 04]','[Partner 05]'];
+const inst = ['[Text 1]','[Text 2]','[Text 3]','[Text 4]','[Text 5]'];
 const fill = (el, arr) => { el.innerHTML = (arr.map(x=>`<i>${x}</i>`).join('')).repeat(4); };
 fill(t1, inst);
+
+/* ── news: auto-rotating feature, synced with the list — hover a
+   headline to pin it, move away and the rotation picks back up ── */
+const NEWS = [
+  { date:'[DATE 1]', cat:'[CATEGORY 1]', source:'[SOURCE 1]',
+    head:'[News headline 1]', stand:'[Standfirst 1 — one line.]' },
+  { date:'[DATE 2]', cat:'[CATEGORY 2]', source:'[SOURCE 2]',
+    head:'[News headline 2]', stand:'[Standfirst 2 — one line.]' },
+  { date:'[DATE 3]', cat:'[CATEGORY 3]', source:'[SOURCE 3]',
+    head:'[News headline 3]', stand:'[Standfirst 3 — one line.]' },
+  { date:'[DATE 4]', cat:'[CATEGORY 4]', source:'[SOURCE 4]',
+    head:'[News headline 4]', stand:'[Standfirst 4 — one line.]' },
+];
+const newsItems = [...newsList.querySelectorAll('.item[data-i]')];
+newsItems.forEach((el,i)=>{
+  el.querySelector('.nMeta').textContent = `${NEWS[i].date} · ${NEWS[i].cat}`;
+  el.querySelector('.nHead').textContent = NEWS[i].head;
+});
+let newsI = 0, newsTimer;
+function showNews(i){
+  newsI = i;
+  const n = NEWS[i];
+  nfMeta.textContent = `${n.date} · ${n.source}`;
+  nfHead.textContent = n.head;
+  nfStand.textContent = n.stand;
+  newsItems.forEach((el,k)=>el.classList.toggle('active', k===i));
+  if(!RM){ newsFeatBody.classList.remove('fade'); void newsFeatBody.offsetWidth; newsFeatBody.classList.add('fade'); }
+}
+function startNewsTimer(){
+  clearInterval(newsTimer);
+  if(RM) return;
+  newsTimer = setInterval(()=>showNews((newsI+1) % NEWS.length), 5000);
+}
+newsItems.forEach((el,i)=>el.addEventListener('mouseenter', ()=>{ clearInterval(newsTimer); showNews(i); }));
+newsList.addEventListener('mouseleave', startNewsTimer);
+showNews(0);
+startNewsTimer();
 
 const team = [['[Name]','[Role]'],['[Name]','[Role]'],['[Name]','[Role]']];
 people.innerHTML = team.map((p,i)=>`
  <article class="card person rv sp" style="--d:${i*.07}s">
   <div class="face"><svg viewBox="0 0 250 216" preserveAspectRatio="none" aria-hidden="true">
-   <g stroke="rgba(124,166,226,.16)" fill="none"><path d="M${20+i*6} 182 L80 138 L138 164 L196 118 L244 146"/><path d="M80 138 L${100+i*8} 74 L172 56 L196 118"/></g>
-   <g fill="rgba(124,166,226,.5)"><circle cx="80" cy="138" r="3"/><circle cx="196" cy="118" r="3"/></g>
+   <g stroke="rgba(132,162,218,.16)" fill="none"><path d="M${20+i*6} 182 L80 138 L138 164 L196 118 L244 146"/><path d="M80 138 L${100+i*8} 74 L172 56 L196 118"/></g>
+   <g fill="rgba(132,162,218,.5)"><circle cx="80" cy="138" r="3"/><circle cx="196" cy="118" r="3"/></g>
    <g fill="#FF4A2B"><circle cx="172" cy="56" r="4"/></g></svg>
    <span class="micro" style="position:absolute;left:22px;bottom:16px">[Photo]</span></div>
   <div class="pad"><h3 class="ttl" style="font-size:17px">${p[0]}</h3>
    <div class="micro" style="margin-top:5px;color:var(--blue);letter-spacing:.13em">${p[1]}</div>
    <p class="body" style="margin-top:14px;font-size:13.5px">[Short bio — two lines.]</p>
    <div style="margin-top:20px;display:flex;gap:8px">
-    <a href="#team" class="ico" aria-label="Email"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8C6F0" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 8l9 6 9-6"/></svg></a>
-    <a href="#team" class="ico" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8C6F0" stroke-width="1.5"><path d="M6 9v10M6 5v.5M11 19v-6a3 3 0 0 1 6 0v6"/></svg></a></div></div>
+    <a href="#team" class="ico" aria-label="Email"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 8l9 6 9-6"/></svg></a>
+    <a href="#team" class="ico" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.5"><path d="M6 9v10M6 5v.5M11 19v-6a3 3 0 0 1 6 0v6"/></svg></a></div></div>
  </article>`).join('') +
  `<div class="card slot rv" style="--d:.21s"><span class="ico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6E7E93" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg></span>
    <span class="micro">Slot available</span><span class="body" style="font-size:13.5px">[Add team member]</span></div>`;
@@ -765,7 +823,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
         vec3 near=mix(vec3(.78,.90,1.0),vec3(.60,.79,1.0),step(.5,vP));
         vec3 far =mix(vec3(.17,.28,.56),vec3(.14,.25,.50),step(.5,vP));
         vec3 c=mix(far,near,vD);
-        c+=vec3(.58,.76,1.0)*vR*.32;                  // rim traces the outline
+        c+=vec3(.60,.80,1.0)*vR*.42;                  // rim traces the outline
         c*=(.52+vY*1.00);                             // crowns lit, sulcal walls dark
         c=mix(c,vec3(1.0,.32,.18),clamp(vG,0.,1.));
         float inr=step(2.5,vP);
@@ -807,8 +865,8 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
         vG=smoothstep(1.7,0.0,d)+(sin(uTime*2.2-position.y*4.0)*.5+.5)*.09;
         gl_Position=projectionMatrix*viewMatrix*wp;}`,
     fragmentShader:`varying float vG;uniform float uFade;
-      void main(){vec3 c=mix(vec3(.30,.44,.72),vec3(1.0,.36,.2),clamp(vG,0.,1.));
-        gl_FragColor=vec4(c,(.032+vG*.40)*uFade);}`
+      void main(){vec3 c=mix(vec3(.36,.54,.86),vec3(1.0,.36,.2),clamp(vG,0.,1.));
+        gl_FragColor=vec4(c,(.052+vG*.42)*uFade);}`
   }));
   grp.add(lines);
 
@@ -825,17 +883,19 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   },{passive:true});
   addEventListener('pointerleave',()=>{active=false;want.set(9,9,9)});
 
-  let baseY=.12, dim=1;
+  let baseY=.12, dim=1, hoverR=2.4;
   function resize(){ const w=host.clientWidth,h=host.clientHeight;
     cam.aspect=w/h; cam.updateProjectionMatrix(); rnd.setSize(w,h,false);
     const dpr=Math.min(devicePixelRatio,2); rnd.setPixelRatio(dpr); U.uDpr.value=dpr;
     const narrow=w<820;
     grp.position.x=narrow?0:1.82; baseY=narrow?-.34:.12;
     grp.scale.setScalar(narrow?1.05:1.68); dim=narrow?.62:1;
+    hoverR=1.42*(narrow?1.05:1.68)*1.15;            // hover/spin catchment ≈ the brain's own radius
   }
   addEventListener('resize',resize); resize();
 
-  const clock=new THREE.Clock(); let sc=0, spin=0, ox=0, oy=0, last=0;
+  const clock=new THREE.Clock();
+  let sc=0, spin=0, ox=0, oy=0, last=0, hoverT=0, prevHover=false;
   addEventListener('scroll',()=>{ sc=Math.min(scrollY/innerHeight,1.2); },{passive:true});
 
   /* opens square on the lateral view, holds a beat, then eases into the turn */
@@ -846,13 +906,23 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
     const t=clock.getElapsedTime(); U.uTime.value=t;
     const dt=Math.min(t-last,.05); last=t;
     ptr.lerp(want,.12); U.uPtr.value.copy(ptr);
+
+    /* hovering the brain hands rotation over to the cursor and lifts it a
+       touch — auto-spin eases out so the two never fight each other, and
+       the whole thing eases back once the cursor moves away */
+    const isHover = !RM && active && ptr.distanceTo(grp.position)<hoverR;
+    if(isHover!==prevHover){ host.style.cursor=isHover?'grab':''; prevHover=isHover; }
+    hoverT += ((isHover?1:0)-hoverT)*.07;
+
     const e=Math.min(1,Math.max(0,(t-HOLD)/EASE));
-    spin += RM?0:dt*.096*(e*e*(3-2*e));          // rad/s, ramped in after the hold
-    oy += (ty-oy)*.05; ox += (tx-ox)*.05;
+    spin += RM?0:dt*.096*(e*e*(3-2*e))*(1-hoverT*.82);   // yields to the cursor on hover
+    const tyH=ty*(1+hoverT*2.6), txH=tx*(1+hoverT*1.9);  // wider swing while hovered = a real spin
+    oy += (tyH-oy)*.06; ox += (txH-ox)*.06;
     grp.rotation.y = LAT + spin + oy + sc*.55;
     grp.rotation.x = -.10 + ox + sc*.12;
     grp.rotation.z = -.04 + Math.sin(t*.25)*.045;
     grp.position.y = baseY - sc*1.5 + Math.sin(t*.5)*.05;
+
     U.uFade.value = Math.max(0,1-sc*1.05);
     host.style.opacity = U.uFade.value*dim;
     if(U.uFade.value>0.01) rnd.render(scene,cam);
