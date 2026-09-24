@@ -102,10 +102,15 @@ nav.on .bar{height:64px}
   top:50%;left:12px;width:11px;height:11px;margin-top:-5.5px;
   border-radius:50%;background:var(--red);
   transform:scale(0);
-  transition:transform .7s var(--ease)}
+  /* linear, not var(--ease): the site's curve is so front-loaded that the front
+     crosses the pill in the first ~15% and the rest of the duration is unseen
+     overshoot, so easing here would cap how slow this can actually look */
+  transition:transform .9s linear}
 .btn.btn-ball:hover::after{transform:scale(24)}
+/* the red bloom is this button's hover fill; btn-3's tint sweep would race ahead of it as a second edge */
+.btn.btn-ball::before{content:none}
 /* label flips as the fill front sweeps past it — earlier reads dark-on-dark, later grey-on-red */
-.btn.btn-ball{transition:transform .35s var(--ease),border-color .2s,color .12s linear .02s}
+.btn.btn-ball{transition:transform .35s var(--ease),border-color .4s,color .3s linear .15s}
 .btn.btn-ball:hover{border-color:var(--red);color:#0A0D12}
 .btn:active{transform:scale(.97)}
 

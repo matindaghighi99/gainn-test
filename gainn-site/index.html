@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;700&family=Instrument+Sans:wght@400..700&display=swap">
 <style>
+/* D-DIN (Datto, SIL OFL) — self-hosted: it's neither a system font nor on Google Fonts */
+@font-face{font-family:'D-DIN';src:url('fonts/D-DIN.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'D-DIN';src:url('fonts/D-DIN-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
 :root{
   --ink:#06090E; --band:#080C12; --card:#0C1119; --card-2:#0E141D; --raised:#0F1620;
   --field:#070B10; --footer:#04070A;
@@ -18,6 +21,7 @@
   --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
   --sans:'Instrument Sans',system-ui,-apple-system,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --display:'D-DIN','DIN Alternate',var(--sans);
   --shell:min(1180px,calc(100vw - 96px));
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -35,7 +39,7 @@ p{margin:0}
 ::selection{background:rgba(255,74,43,.28);color:#fff}
 
 /* ── type ─────────────────────────────────────── */
-.display{font-size:clamp(42px,6.4vw,92px);line-height:1.02;letter-spacing:-.018em;color:var(--tx-strong)}
+.display{font-family:var(--display);font-weight:700;font-size:clamp(42px,6.4vw,92px);line-height:1.02;letter-spacing:-.012em;color:var(--tx-strong)}
 .h2{font-size:clamp(34px,5.2vw,72px);line-height:1.03;letter-spacing:-.022em;text-wrap:balance;
   color:#1E3765}
 .h3{font-size:clamp(26px,2.9vw,42px);line-height:1.1;letter-spacing:-.014em;color:var(--tx-strong)}
@@ -100,10 +104,15 @@ nav.on .bar{height:64px}
   top:50%;left:12px;width:11px;height:11px;margin-top:-5.5px;
   border-radius:50%;background:var(--red);
   transform:scale(0);
-  transition:transform .7s var(--ease)}
+  /* linear, not var(--ease): the site's curve is so front-loaded that the front
+     crosses the pill in the first ~15% and the rest of the duration is unseen
+     overshoot, so easing here would cap how slow this can actually look */
+  transition:transform .9s linear}
 .btn.btn-ball:hover::after{transform:scale(24)}
+/* the red bloom is this button's hover fill; btn-3's tint sweep would race ahead of it as a second edge */
+.btn.btn-ball::before{content:none}
 /* label flips as the fill front sweeps past it — earlier reads dark-on-dark, later grey-on-red */
-.btn.btn-ball{transition:transform .35s var(--ease),border-color .2s,color .12s linear .02s}
+.btn.btn-ball{transition:transform .35s var(--ease),border-color .4s,color .3s linear .15s}
 .btn.btn-ball:hover{border-color:var(--red);color:#0A0D12}
 .btn:active{transform:scale(.97)}
 
@@ -128,9 +137,9 @@ nav.on .bar{height:64px}
 /* the two marks sit side by side, parted by a hairline — nothing else */
 .hero-logos{display:flex;align-items:center;gap:30px;margin-top:64px;flex-wrap:wrap}
 .hero-logos img{width:auto;display:block}
-.hero-logos img.gainn{height:92px}
-.hero-logos img.uoft{height:66px}
-.hero-logos .lg-div{flex:none;width:1px;height:64px;background:var(--line-2)}
+.hero-logos img.gainn{height:108px}
+.hero-logos img.uoft{height:78px}
+.hero-logos .lg-div{flex:none;width:1px;height:74px;background:var(--line-2)}
 .stats{display:flex;gap:44px;margin-top:56px;flex-wrap:wrap}
 .stat b{display:block;font-family:var(--serif);font-weight:400;font-size:42px;line-height:1;letter-spacing:-.012em;color:var(--tx-strong);font-variant-numeric:tabular-nums}
 .stat i{display:block;margin-top:9px;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx-faint)}
@@ -267,9 +276,9 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .g3,.g4,.g5{grid-template-columns:1fr}
   .stats{gap:28px}
   .hero-logos{gap:20px;margin-top:48px}
-  .hero-logos img.gainn{height:62px}
-  .hero-logos img.uoft{height:45px}
-  .hero-logos .lg-div{height:46px}
+  .hero-logos img.gainn{height:73px}
+  .hero-logos img.uoft{height:53px}
+  .hero-logos .lg-div{height:53px}
   .ev{flex-wrap:wrap;gap:18px}
   .mq{flex-direction:column;align-items:flex-start;gap:16px;padding:26px 0}
   .mq-vp{width:100%;flex:none}
@@ -321,7 +330,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
       </div>
       <div class="hero-logos rv" style="--d:.68s">
-        <img class="gainn" src="gainn-logo-hero-ondark.png" alt="GAINN — Graduate Advancement in Neuromodulation &amp; Neurotech">
+        <img class="gainn" src="gainn-logo-hero.png" alt="GAINN — Graduate Advancement in Neuromodulation &amp; Neurotech">
         <span class="lg-div"></span>
         <img class="uoft" src="uoft-crania-logo.png" alt="University of Toronto — CRANIA NeuroModulation Institute">
       </div>
