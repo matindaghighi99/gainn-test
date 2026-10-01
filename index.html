@@ -126,6 +126,24 @@ nav.on .bar{height:72px}
 .grain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.10;z-index:2}
 .hero-in{position:relative;z-index:3;max-width:800px}
 #hl{font-size:clamp(40px,5.4vw,78px);line-height:1.04;text-wrap:balance}
+/* two set lines — "Engineering new ways to / understand and shape the brain."
+   The long line runs ~13em, so the size tracks the column to keep the block
+   the width it had as three lines and leave the brain its room */
+@media(min-width:681px){ #hl{white-space:nowrap;font-size:calc(var(--shell) * .054)} .hero-in{max-width:none} }
+/* desktop: the copy steps out of the centred column toward the window's
+   left edge and grows with the viewport, handing the right side to the brain */
+@media(min-width:820px){
+  /* sized so "Engineering new ways to" (~11.9em) just fills the left half */
+  #hl{font-size:calc((50vw - clamp(28px,4vw,72px) - 24px) / 12);white-space:normal}
+  #hl .l1{white-space:nowrap}
+  /* "the brain." centred under "understand and shape": the wrapper shrinks to that line's width */
+  #hl .l23{display:inline-block}
+  #hl .l3{display:block;text-align:center}
+  .hero-in{margin-left:calc((var(--shell) - 100vw) / 2 + clamp(28px,4vw,72px));
+    width:calc(50vw - clamp(28px,4vw,72px) - 24px)}
+}
+@media(min-width:681px) and (max-width:819px){ #hl{font-size:calc(var(--shell) * .074)} }
+@media(max-width:680px){ .hbr{display:none} }
 .tag{display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 16px 0 12px;border:1px solid rgba(132,162,218,.3);border-radius:999px;background:rgba(30,55,101,.24);backdrop-filter:blur(6px)}
 .tag span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--link)}
 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
@@ -135,9 +153,9 @@ nav.on .bar{height:72px}
 /* the two marks sit side by side, parted by a hairline — nothing else */
 .hero-logos{display:flex;align-items:center;gap:30px;margin-top:76px;flex-wrap:wrap}
 .hero-logos img{width:auto;display:block}
-.hero-logos img.gainn{height:108px}
-.hero-logos img.uoft{height:78px}
-.hero-logos .lg-div{flex:none;width:1px;height:74px;background:var(--line-2)}
+.hero-logos img.gainn{height:clamp(96px,10.4vw,150px)}
+.hero-logos img.uoft{height:clamp(70px,7.6vw,110px)}
+.hero-logos .lg-div{flex:none;width:1px;height:clamp(66px,7.2vw,104px);background:var(--line-2)}
 .stats{display:flex;gap:44px;margin-top:56px;flex-wrap:wrap}
 .stat b{display:block;font-family:var(--serif);font-weight:400;font-size:42px;line-height:1;letter-spacing:-.012em;color:var(--tx-strong);font-variant-numeric:tabular-nums}
 .stat i{display:block;margin-top:9px;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx-faint)}
@@ -183,6 +201,10 @@ nav.on .bar{height:72px}
 .two{display:grid;grid-template-columns:1.9fr 1fr;gap:32px;align-items:start}
 .duo{display:grid;grid-template-columns:1fr;gap:clamp(20px,2.6vw,34px)}
 .duo .lede{max-width:620px;margin-left:auto}
+/* program: headline on one line across the column, the intro directly under it on the left.
+   the line runs ~18.7em, so the size follows the column width until it caps */
+#program .duo .lede{margin-left:0;max-width:640px}
+@media(min-width:1041px){ #program .h2{white-space:nowrap;font-size:min(62px,calc((100vw - 96px) / 19))} }
 .about-copy{max-width:620px;margin-left:auto;display:flex;flex-direction:column;gap:18px}
 .about-copy .lede{margin-left:0}
 .duo2{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(32px,4vw,56px);align-items:start}
@@ -382,9 +404,9 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .g3,.g4,.g5{grid-template-columns:1fr}
   .stats{gap:28px}
   .hero-logos{gap:16px;margin-top:52px}
-  .hero-logos img.gainn{height:62px}
-  .hero-logos img.uoft{height:45px}
-  .hero-logos .lg-div{height:45px}
+  .hero-logos img.gainn{height:64px}
+  .hero-logos img.uoft{height:46px}
+  .hero-logos .lg-div{height:46px}
   .ev{flex-wrap:wrap;gap:18px}
   .mq{flex-direction:column;align-items:flex-start;gap:16px;padding:26px 0}
   .mq-vp{width:100%;flex:none}
@@ -500,7 +522,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   <div class="shell" style="position:relative;z-index:3">
     <div class="hero-in" id="heroIn">
       <h1 class="display" id="hl">
-        <span class="w"><i style="--d:.05s">Engineering</i></span> <span class="w"><i style="--d:.11s">new</i></span> <span class="w"><i style="--d:.17s">ways</i></span> <span class="w"><i style="--d:.23s">to</i></span> <span class="w"><i style="--d:.29s">understand</i></span> <span class="w"><i style="--d:.35s">and</i></span> <span class="w"><i class="it" style="--d:.41s">shape</i></span> <span class="w"><i class="it" style="--d:.47s">the</i></span> <span class="w"><i class="it" style="--d:.53s">brain.</i></span>
+        <span class="l1"><span class="w"><i style="--d:.05s">Engineering</i></span> <span class="w"><i style="--d:.11s">new</i></span> <span class="w"><i style="--d:.17s">ways</i></span> <span class="w"><i style="--d:.23s">to</i></span></span> <br class="hbr"><span class="l23"><span class="w"><i class="it" style="--d:.29s">understand</i></span> <span class="w"><i class="it" style="--d:.35s">and</i></span> <span class="w"><i class="it" style="--d:.41s">shape</i></span> <span class="l3"><span class="w"><i class="it" style="--d:.47s">the</i></span> <span class="w"><i class="it" style="--d:.53s">brain.</i></span></span></span>
       </h1>
       <div class="hero-logos rv" style="--d:.5s">
         <img class="gainn" src="assets/images/brand/gainn-logo-white-navy.png" alt="GAINN — Graduate Advancement in Neuromodulation &amp; Neurotech">
@@ -534,13 +556,13 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   </div>
   <div class="grid g4" style="margin-top:64px">
     <div class="card rv sp" style="--d:0.00s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h4"/></svg>
-      <span class="micro" style="display:block;margin-top:22px;color:var(--tx-faint)">01</span><h3 class="ttl" style="margin-top:10px">Interdisciplinary coursework</h3></div>
+      <h3 class="ttl" style="margin-top:22px">Interdisciplinary coursework</h3></div>
     <div class="card rv sp" style="--d:0.08s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>
-      <span class="micro" style="display:block;margin-top:22px;color:var(--tx-faint)">02</span><h3 class="ttl" style="margin-top:10px">Hands-on research</h3></div>
+      <h3 class="ttl" style="margin-top:22px">Hands-on research</h3></div>
     <div class="card rv sp" style="--d:0.16s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 17l5-5 4 3 9-9"/><path d="M16 6h5v5"/></svg>
-      <span class="micro" style="display:block;margin-top:22px;color:var(--tx-faint)">03</span><h3 class="ttl" style="margin-top:10px">Commercialization &amp; entrepreneurship training</h3></div>
+      <h3 class="ttl" style="margin-top:22px">Commercialization &amp; entrepreneurship training</h3></div>
     <div class="card rv sp" style="--d:0.24s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-      <span class="micro" style="display:block;margin-top:22px;color:var(--tx-faint)">04</span><h3 class="ttl" style="margin-top:10px">Internships &amp; academic exchanges</h3></div>
+      <h3 class="ttl" style="margin-top:22px">Internships &amp; academic exchanges</h3></div>
   </div>
   <div class="card rv" style="margin-top:20px;padding:46px;display:flex;gap:30px;border-color:var(--line-blue);background:#080D15">
     <span style="font-family:var(--serif);font-size:70px;line-height:.62;color:var(--red)">&ldquo;</span>
@@ -559,17 +581,14 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   </div>
   <div class="two">
     <div class="rail rv">
-      <div class="step"><em></em><span class="micro" style="color:var(--tx-faint)">Requirement 01</span><h3 class="ttl" style="margin-top:8px">Collaborative Specialization</h3><p class="body" style="margin-top:8px">Complete the Collaborative Specialization in Neuromodulation &amp; Neurotechnology.</p></div>
-      <div class="step"><em></em><span class="micro" style="color:var(--tx-faint)">Requirement 02</span><h3 class="ttl" style="margin-top:8px">Entrepreneurship &amp; commercialization</h3><p class="body" style="margin-top:8px">Complete entrepreneurship and commercialization training.</p></div>
-      <div class="step"><em></em><span class="micro" style="color:var(--tx-faint)">Requirement 03</span><h3 class="ttl" style="margin-top:8px">Collaborative mobility</h3><p class="body" style="margin-top:8px">Undertake a collaborative mobility experience in an academic and/or industry setting outside their primary research environment.</p></div>
-      <div class="step"><em></em><span class="micro" style="color:var(--tx-faint)">Requirement 04</span><h3 class="ttl" style="margin-top:8px">Workshops, seminars &amp; events</h3><p class="body" style="margin-top:8px">Participate in GAINN workshops, seminars, and research events, including presenting their research at the CRANIA Conference.</p></div>
+      <div class="step"><em></em><h3 class="ttl">Collaborative Specialization</h3><p class="body" style="margin-top:8px">Complete the Collaborative Specialization in Neuromodulation &amp; Neurotechnology.</p></div>
+      <div class="step"><em></em><h3 class="ttl">Entrepreneurship &amp; commercialization</h3><p class="body" style="margin-top:8px">Complete entrepreneurship and commercialization training.</p></div>
+      <div class="step"><em></em><h3 class="ttl">Collaborative mobility</h3><p class="body" style="margin-top:8px">Undertake a collaborative mobility experience in an academic and/or industry setting outside their primary research environment.</p></div>
+      <div class="step"><em></em><h3 class="ttl">Workshops, seminars &amp; events</h3><p class="body" style="margin-top:8px">Participate in GAINN workshops, seminars, and research events, including presenting their research at the CRANIA Conference.</p></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:20px">
       <div class="panel rv" style="--d:.08s"><span class="eyebrow">Why it matters</span>
-        <p class="body" style="margin:14px 0 20px">These activities are designed to broaden trainees’ scientific and professional skills, foster interdisciplinary and cross-sector collaboration, and prepare them for careers across academia, healthcare, and industry.</p>
-        <div class="row"><u>01</u><b>Academia</b><i>Careers</i></div>
-        <div class="row"><u>02</u><b>Healthcare</b><i>Careers</i></div>
-        <div class="row"><u>03</u><b>Industry</b><i>Careers</i></div>
+        <p class="body" style="margin-top:14px">These activities are designed to broaden trainees’ scientific and professional skills, foster interdisciplinary and cross-sector collaboration, and prepare them for careers across academia, healthcare, and industry.</p>
       </div>
       <div class="panel hot rv" style="--d:.16s;position:relative;overflow:hidden">
         <span class="seam" style="background:linear-gradient(90deg,transparent,rgba(255,74,43,.6),transparent)"></span>
@@ -653,7 +672,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
 
 
   <div class="head rv" style="margin-top:88px"><span class="eyebrow">Partners</span><span class="rule"></span></div>
-  <div class="pls rv"><a class="pl" href="https://www.utoronto.ca" target="_blank" rel="noopener" style="--h:70px"><img src="assets/images/partners/university-of-toronto.png" alt="University of Toronto" loading="lazy"></a><a class="pl" href="https://www.uhn.ca" target="_blank" rel="noopener" style="--h:44px"><img src="assets/images/partners/uhn.png" alt="University Health Network" loading="lazy"></a><a class="pl" href="https://www.sickkids.ca" target="_blank" rel="noopener" style="--h:48px"><img src="assets/images/partners/sickkids.png" alt="SickKids" loading="lazy"></a><a class="pl" href="https://www.camh.ca" target="_blank" rel="noopener" style="--h:62px"><img src="assets/images/partners/camh.png" alt="CAMH — Centre for Addiction and Mental Health" loading="lazy"></a><a class="pl" href="https://sunnybrook.ca" target="_blank" rel="noopener" style="--h:48px"><img src="assets/images/partners/sunnybrook.png" alt="Sunnybrook Health Sciences Centre" loading="lazy"></a></div>
+  <div class="pls rv"><a class="pl" href="https://www.utoronto.ca" target="_blank" rel="noopener" style="--h:70px"><img src="assets/images/partners/university-of-toronto.png" alt="University of Toronto" loading="lazy"></a><a class="pl" href="https://www.uhn.ca" target="_blank" rel="noopener" style="--h:44px"><img src="assets/images/partners/uhn.png" alt="University Health Network" loading="lazy"></a><a class="pl" href="https://www.sickkids.ca" target="_blank" rel="noopener" style="--h:48px"><img src="assets/images/partners/sickkids.png" alt="SickKids" loading="lazy"></a><a class="pl" href="https://www.camh.ca" target="_blank" rel="noopener" style="--h:62px"><img src="assets/images/partners/camh.png" alt="CAMH — Centre for Addiction and Mental Health" loading="lazy"></a><a class="pl" href="https://sunnybrook.ca" target="_blank" rel="noopener" style="--h:60px"><img src="assets/images/partners/sunnybrook.png" alt="Sunnybrook Health Sciences Centre" loading="lazy"></a></div>
 </div></section>
 
 <!-- ════ CONTACT ════ -->
@@ -741,7 +760,6 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
         <button class="ico" id="bxClose" aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
       <div id="bxIn">
-        <span class="micro" id="bxNo"></span>
         <h3 class="h3" id="bxName"></h3>
         <p class="aff" id="bxAff"></p>
         <div class="tags" id="bxTags"></div>
@@ -802,13 +820,11 @@ startNewsTimer();
 
 
 /* ── faculty ──────────────────────────────────── */
-const FAC = [{"n": "Taufik Valiante", "r": "Director, CRANIA", "a": "Toronto Western Hospital · Krembil Brain Institute", "img": "assets/images/team/taufik-valiante.jpg", "t": ["Neurosurgery", "Human single-neuron", "Neuromodulation"], "bio": ["Dr. Taufik Valiante is a neurosurgeon-scientist and Director of the Surgical Epilepsy Program at Toronto Western Hospital and a Scientist at the Krembil Brain Institute. His Neuron to Brain Lab studies the human brain at cellular resolution, combining direct recordings from single neurons with computational approaches to understand brain function and develop mechanism-based neuromodulation therapies.", "His research has advanced human neuroscience through studies of neuronal diversity, memory, active sensing, and single-neuron activity in freely moving people through the Brains in the Wild platform. His clinical research program has also advanced first-in-human neuromodulation approaches, including Canada’s first DBS for fentanyl use disorder.", "As Director of the CRANIA NeuroModulation Institute, he has helped build an interdisciplinary education and research ecosystem in neuromodulation and neurotechnology, including the Collaborative Specialization, BME1500, ECE441, and the undergraduate Certificate in Neuromodulation. He has trained more than 60 graduate students, postdoctoral and clinical fellows and has helped establish CRANIA as a leading national platform for neuromodulation research."]}, {"n": "Xilin Liu", "r": "Assistant Professor, ECE", "a": "University of Toronto · University Health Network", "img": "assets/images/team/xilin-liu.jpg", "t": ["Bioelectronics", "Closed-loop", "Edge AI"], "bio": ["Xilin Liu is an Assistant Professor in the Edward S. Rogers Sr. Department of Electrical and Computer Engineering at the University of Toronto and an affiliated scientist at the University Health Network (UHN). He received his PhD from the University of Pennsylvania. Before joining the University of Toronto, he held industry positions at Qualcomm Inc. in San Diego, California.", "His research interests include mixed-signal circuit design and system integration for emerging applications. Through CRANIA-related research projects, his team develops low-power wireless implantable and wearable bioelectronic devices for multimodal neural interfacing and closed-loop neuromodulation. His team also explores edge AI–enabled neuromodulation to support therapeutic interventions for neurological disorders and investigate fundamental neural mechanisms."]}, {"n": "J. Paul Santerre", "r": "Medical polymers · Innovation", "a": "University of Toronto", "img": "assets/images/team/paul-santerre.jpg", "t": ["Biomaterials", "70+ patents", "Venture creation"], "bio": ["J. Paul Santerre has published more than 250 peer-reviewed publications and is listed as an inventor on more than 70 patents in the area of medical polymers. He was a co-founder and director of an early-stage focused entrepreneurial incubator (H2i) that has trained more than 1,000 client health science companies, which over the last decade have generated more than $750M CDN.", "He was the co-founder of Interface Biologics and several other venture spin-outs, and received the Governor General’s award for Entrepreneurship. His lab’s science has been recognized with an honorary doctorate from McMaster University, and many fellowship recognitions for the lab’s scientific discoveries, along with many other research and innovation awards."]}, {"n": "Jiannis Taxidis", "r": "Scientist, SickKids", "a": "Asst. Professor, Physiology · University of Toronto", "img": "assets/images/team/jiannis-taxidis.jpg", "t": ["Memory", "In vivo imaging", "Computational"], "bio": ["Dr. Taxidis is a Scientist in the Neurosciences & Mental Health Program at The Hospital for Sick Children (SickKids) and an Assistant Professor at the Department of Physiology, University of Toronto. Trained in physics and mathematics, he moved from computational modelling of hippocampal networks (PhD, postdoc at Caltech) to in vivo imaging in behaving mice (postdoc at UCLA).", "His research focuses on network mechanisms underlying learning and memory in health and brain disorders. He studies how hippocampal ensembles form “time cell” sequences that bridge temporal gaps, how plasticity rules establish these sequences, and how interneuronal subtypes shape their dynamics.", "His laboratory combines cutting-edge imaging methods on mice in vivo (two-photon calcium imaging, voltage imaging, holographic optogenetics) with complex behavioural assays and computational modeling. His goal is to understand how neuronal circuits encode experiences and their temporal intervals, store them as memory, and how these processes break down in conditions associated with memory deficits, such as schizophrenia."]}, {"n": "Helen Tran", "r": "Assistant Professor, Chemistry", "a": "University of Toronto · Cross-appointed, Chemical Engineering", "img": "assets/images/team/helen-tran.jpg", "t": ["Polymers", "Functional materials", "Chemistry"], "bio": ["Dr. Tran is an Assistant Professor at the University of Toronto in the Department of Chemistry (cross-appointed in the Department of Chemical Engineering). Her research program centers on polymers with defined sequence and architecture to develop emergent functional materials.", "She was an Intelligence Community postdoctoral fellow with Prof. Bao at Stanford University, a National Defense Science and Engineering Graduate fellow with Prof. Campos at Columbia University, a post-baccalaureate fellow with Dr. Zuckermann at the Molecular Foundry, and an undergraduate at UC Berkeley."]}, {"n": "José Zariffa", "r": "KITE Chair in SCI Research", "a": "KITE Research Institute, UHN · Professor, IBME", "img": "assets/images/team/jose-zariffa.jpg", "t": ["Neuroprosthetics", "Wearables", "Machine learning"], "bio": ["José Zariffa is the KITE Chair in Spinal Cord Injury Research, a Senior Scientist, and the Associate Director, Scientific at the KITE Research Institute, Toronto Rehabilitation Institute – University Health Network. He is also a Professor at the Institute of Biomedical Engineering at the University of Toronto.", "His research interests focus on neuroprosthetics and technology for upper limb neurorehabilitation, encompassing work in wearable sensors, neural interfaces, electrophysiology, and machine learning. His team was awarded the Grand Prize in the Spinal Cord Rehab Innovation Challenge, a national competition focused on new tools to measure rehab activities and their impact."]}];
-const pad2 = i => String(i+1).padStart(2,'0');
+const FAC = [{"n": "Taufik Valiante", "r": "Director, CRANIA", "a": "Toronto Western Hospital · Krembil Brain Institute", "img": "assets/images/team/taufik-valiante.jpg", "t": ["Neurosurgery", "Human single-neuron", "Neuromodulation"], "bio": ["Dr. Taufik Valiante is a neurosurgeon-scientist and Director of the Surgical Epilepsy Program at Toronto Western Hospital and a Scientist at the Krembil Brain Institute. His Neuron to Brain Lab studies the human brain at cellular resolution, combining direct recordings from single neurons with computational approaches to understand brain function and develop mechanism-based neuromodulation therapies.", "His research has advanced human neuroscience through studies of neuronal diversity, memory, active sensing, and single-neuron activity in freely moving people through the Brains in the Wild platform. His clinical research program has also advanced first-in-human neuromodulation approaches, including Canada’s first DBS for fentanyl use disorder.", "As Director of the CRANIA NeuroModulation Institute, he has helped build an interdisciplinary education and research ecosystem in neuromodulation and neurotechnology, including the Collaborative Specialization, BME1500, ECE441, and the undergraduate Certificate in Neuromodulation. He has trained more than 60 graduate students, postdoctoral and clinical fellows and has helped establish CRANIA as a leading national platform for neuromodulation research."]}, {"n": "Xilin Liu", "r": "Assistant Professor, ECE", "a": "University of Toronto · University Health Network", "img": "assets/images/team/xilin-liu.jpg", "t": ["Bioelectronics", "Closed-loop", "Edge AI"], "bio": ["Xilin Liu is an Assistant Professor in the Edward S. Rogers Sr. Department of Electrical and Computer Engineering at the University of Toronto and an affiliated scientist at the University Health Network (UHN). He received his PhD from the University of Pennsylvania. Before joining the University of Toronto, he held industry positions at Qualcomm Inc. in San Diego, California.", "His research interests include mixed-signal circuit design and system integration for emerging applications. Through CRANIA-related research projects, his team develops low-power wireless implantable and wearable bioelectronic devices for multimodal neural interfacing and closed-loop neuromodulation. His team also explores edge AI–enabled neuromodulation to support therapeutic interventions for neurological disorders and investigate fundamental neural mechanisms."]}, {"n": "J. Paul Santerre", "r": "Medical polymers · Innovation", "a": "University of Toronto", "img": "assets/images/team/paul-santerre.jpg", "t": ["Biomaterials", "70+ patents", "Venture creation"], "bio": ["J. Paul Santerre has published more than 250 peer-reviewed publications and is listed as an inventor on more than 70 patents in the area of medical polymers. He was a co-founder and director of an early-stage focused entrepreneurial incubator (H2i) that has trained more than 1,000 client health science companies, which over the last decade have generated more than $750M CDN.", "He was the co-founder of Interface Biologics and several other venture spin-outs, and received the Governor General’s award for Entrepreneurship. His lab’s science has been recognized with an honorary doctorate from McMaster University, and many fellowship recognitions for the lab’s scientific discoveries, along with many other research and innovation awards."]}, {"n": "Jiannis Taxidis", "r": "Scientist, SickKids", "a": "Asst. Professor, Physiology · University of Toronto", "img": "assets/images/team/jiannis-taxidis.jpg", "t": ["Memory", "In vivo imaging", "Computational"], "bio": ["Dr. Taxidis is a Scientist in the Neurosciences & Mental Health Program at The Hospital for Sick Children (SickKids) and an Assistant Professor at the Department of Physiology, University of Toronto. Trained in physics and mathematics, he moved from computational modelling of hippocampal networks (PhD, postdoc at Caltech) to in vivo imaging in behaving mice (postdoc at UCLA).", "His research focuses on network mechanisms underlying learning and memory in health and brain disorders. He studies how hippocampal ensembles form “time cell” sequences that bridge temporal gaps, how plasticity rules establish these sequences, and how interneuronal subtypes shape their dynamics.", "His laboratory combines cutting-edge imaging methods on mice in vivo (two-photon calcium imaging, voltage imaging, holographic optogenetics) with complex behavioural assays and computational modeling. His goal is to understand how neuronal circuits encode experiences and their temporal intervals, store them as memory, and how these processes break down in conditions associated with memory deficits, such as schizophrenia."]}, {"n": "Helen Tran", "r": "Assistant Professor, Chemistry", "a": "University of Toronto · Cross-appointed, Chemical Engineering", "img": "assets/images/team/helen-tran.jpg", "t": ["Polymers", "Functional materials", "Chemistry"], "bio": ["Dr. Tran is an Assistant Professor at the University of Toronto in the Department of Chemistry (cross-appointed in the Department of Chemical Engineering). Her research program centers on polymers with defined sequence and architecture to develop emergent functional materials.", "She was an Intelligence Community postdoctoral fellow with Prof. Bao at Stanford University, a National Defense Science and Engineering Graduate fellow with Prof. Campos at Columbia University, a post-baccalaureate fellow with Dr. Zuckermann at the Molecular Foundry, and an undergraduate at UC Berkeley."]}, {"n": "José Zariffa", "r": "KITE Chair in SCI Research", "a": "KITE Research Institute, UHN · Professor, IBME", "img": "assets/images/team/jose-zariffa.jpg", "t": ["Neuroprosthetics", "Wearables", "Machine learning"], "bio": ["José Zariffa is the KITE Chair in Spinal Cord Injury Research, a Senior Scientist, and the Associate Director, Scientific at the KITE Research Institute, Toronto Rehabilitation Institute – University Health Network. He is also a Professor at the Institute of Biomedical Engineering at the University of Toronto.", "His research interests focus on neuroprosthetics and technology for upper limb neurorehabilitation, encompassing work in wearable sensors, neural interfaces, electrophysiology, and machine learning. His team was awarded the Grand Prize in the Spinal Cord Rehab Innovation Challenge, a national competition focused on new tools to measure rehab activities and their impact."]}, {"n": "Cindi Morshead", "r": "Professor & Chair, Anatomy", "a": "Department of Surgery · University of Toronto", "img": "assets/images/team/cindi-morshead.jpg", "t": ["Neural stem cells", "Regenerative medicine", "Brain organoids"], "bio": ["Dr. Cindi Morshead is a leader in neural stem cell biology and regenerative medicine. She was part of the team that first identified neural stem cells in the adult mammalian brain, and her research has defined the fundamental biology of these cells — the factors regulating their quiescence, activation, and migration, and their role in injury and disease.", "With the goal of harnessing their potential for neural repair, her work has included transplanting reprogrammed neural stem cells, activating resident neural stem cells in the brain to enhance neural regeneration and repair, and more recently, to a gene therapy approach to enhance neurogenesis. Her lab uses human cerebral organoids to model brain aging and disease and to develop novel therapeutics. She has sustained success securing competitive funding to advance her science and contributed to clinical trials based on her lab’s expertise.", "Dr. Morshead is a Professor and Chair of the Division of Anatomy, Department of Surgery, at the University of Toronto, with cross-appointments at the Donnelly Centre, KITE/Toronto Rehabilitation Institute, and CRANIA at University Health Network. She has held numerous leadership positions throughout her career. Her work has been recognized with innovation awards, multiple patents, and she has garnered recognition with scientific and mentorship awards."]}, {"n": "Luka Milosevic", "r": "Co-Director, CRANIA", "a": "Institute of Biomedical Engineering · Krembil Brain Institute, UHN", "img": "assets/images/team/luka-milosevic.jpg", "t": ["Neuromodulation", "Intracranial recordings", "Deep brain stimulation"], "bio": ["Luka Milosevic received his PhD in Biomedical Engineering from the University of Toronto, after which he pursued a Postdoctoral Fellowship at University of Tübingen Institute for Neuromodulation and Neurotechnology, Germany. His research is at the intersection of biomedical engineering and neuroscience, and the focus of his program is on the development of novel data-driven methods of neuromodulation and brain stimulation.", "His lab specializes in intracranial and whole-brain neurophysiological recordings in people with neurological disorders, as well as optical, electrophysiological, and behavioural techniques in preclinical models. Dr. Milosevic and his team also play a clinical role monitoring patients’ brain activity to guide the placement of deep brain stimulation (DBS) devices at the Toronto Western Hospital. Outside of work, Luka enjoys hiking, biking, and travel!", "He is an Associate Professor at the Institute of Biomedical Engineering, University of Toronto, a Scientist at the Krembil Brain Institute, University Health Network, and Co-Director of the Centre for Advancing Neurotechnological Innovation to Application (CRANIA)."]}];
 const arrow = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 faculty.innerHTML = FAC.map((p,i)=>`
  <button type="button" class="card fac rv sp" style="--d:${(i%3)*.08}s" data-i="${i}" aria-haspopup="dialog" aria-label="Read bio: ${p.n}">
   <div class="ph"><img src="${p.img}" alt="Portrait of ${p.n}" loading="lazy" decoding="async">
-   <span class="no">${pad2(i)} / ${pad2(FAC.length-1)}</span>
    <span class="rd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EDF2F9" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
    <div class="nm"><h3>${p.n}</h3></div></div>
   <div class="pad"><p class="aff">${p.a}</p>
@@ -820,7 +836,6 @@ let cur = 0, lastFocus = null;
 function fillBio(i, anim){
   cur = (i + FAC.length) % FAC.length; const p = FAC[cur];
   bxImg.src = p.img; bxImg.alt = 'Portrait of ' + p.n;
-  bxNo.textContent = pad2(cur) + ' / ' + pad2(FAC.length-1);
   bxName.textContent = p.n; bxAff.textContent = p.a;
   bxTags.innerHTML = p.t.map(t=>`<span>${t}</span>`).join('');
   bxBody.innerHTML = p.bio.map(t=>`<p>${t}</p>`).join('');
@@ -970,7 +985,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   };
   const nrm=[], gyr=[];
   const push=(x,y,z,k,nx,ny,nz,gy)=>{ pos.push(x,y,z); seed.push(Math.random());
-    size.push((k===0?1.15:1.0)+Math.random()*1.5); part.push(k);
+    size.push((k===0?1.35:1.15)+Math.random()*.7); part.push(k);
     nrm.push(nx,ny,nz); gyr.push(gy===undefined?1:gy); };
 
   /* lateral silhouette, traced clockwise from the frontal pole; the last
@@ -1032,7 +1047,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
 
   /* cerebrum: march each direction in from outside, so the first crossing
      wins and concavities like the lateral fissure survive */
-  const NC = LOW?7000:15000, GA=Math.PI*(1+Math.sqrt(5));
+  const NC = LOW?4200:8000, GA=Math.PI*(1+Math.sqrt(5));
   for(let i=0;i<NC;i++){
     const t=(i+.5)/NC, phi=Math.acos(1-2*t), th=GA*i;
     const dx=Math.sin(phi)*Math.cos(th), dy=Math.cos(phi), dz=Math.sin(phi)*Math.sin(th);
@@ -1057,7 +1072,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
 
   /* a sparse interior so the volume does not read as a hollow shell; kept
      back from the boundary so it never doubles as a second surface */
-  const NI = LOW?600:1000;
+  const NI = LOW?140:260;
   for(let i=0,tries=0;i<NI && tries<NI*16;tries++){
     const x=(Math.random()*2-1)*.88, y=-.66+Math.random()*1.52, z=(Math.random()*2-1)*1.04;
     if(!inCereb(x,y,z)) continue;
@@ -1067,7 +1082,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   }
 
   /* cerebellum — wider than tall, fine parallel folia, vermis down the middle */
-  const NB = LOW?560:820, by=-.50, bz=-.66;
+  const NB = LOW?360:520, by=-.50, bz=-.66;
   for(let i=0;i<NB;i++){
     const t=(i+.5)/NB, phi=Math.acos(1-2*t), th=GA*i;
     let x=Math.sin(phi)*Math.cos(th)*.46, y=Math.cos(phi)*.29, z=Math.sin(phi)*Math.sin(th)*.32;
@@ -1081,7 +1096,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   }
 
   /* brainstem — midbrain into the pons bulge, then the medulla */
-  const NS = LOW?170:300, rings=30;
+  const NS = LOW?120:180, rings=30;
   for(let i=0;i<NS;i++){
     const v=(i%rings)/rings, k=Math.floor(i/rings), th=i*2.399963+k*.7;
     const r=.135+.075*bump(v-.30,.17)-.055*v;
@@ -1117,7 +1132,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
         gl_Position=projectionMatrix*mv;}`,
     fragmentShader:`varying float vG;varying float vP;varying float vD;varying float vR;varying float vY;uniform float uFade;
       void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;
-        float a=exp(-d*d*36.0)+exp(-d*d*9.0)*.17;
+        float a=smoothstep(.5,.30,d)*.55+exp(-d*d*40.0)*.6;
         vec3 near=mix(vec3(.78,.90,1.0),vec3(.60,.79,1.0),step(.5,vP));
         vec3 far =mix(vec3(.17,.28,.56),vec3(.14,.25,.50),step(.5,vP));
         vec3 c=mix(far,near,vD);
@@ -1131,7 +1146,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
 
   /* synapses: link each point to its 2 nearest neighbours, but only within
      a short radius so the fissures and sulci are never bridged */
-  const CELL=.09, MAXD=.062, grid=new Map();
+  const CELL=.11, MAXD=.085, grid=new Map();
   const cid=(a,b,c)=>a*73856093^b*19349663^c*83492791;
   for(let i=0;i<N;i++){
     const k=cid(Math.floor(P[i*3]/CELL),Math.floor(P[i*3+1]/CELL),Math.floor(P[i*3+2]/CELL));
@@ -1164,7 +1179,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
         gl_Position=projectionMatrix*viewMatrix*wp;}`,
     fragmentShader:`varying float vG;uniform float uFade;
       void main(){vec3 c=mix(vec3(.36,.54,.86),vec3(1.0,.36,.2),clamp(vG,0.,1.));
-        gl_FragColor=vec4(c,(.052+vG*.42)*uFade);}`
+        gl_FragColor=vec4(c,(.06+vG*.42)*uFade);}`
   }));
   grp.add(lines);
 
@@ -1183,7 +1198,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
 
   let baseY=.12, dim=1, hoverR=2.4;
   const hl=document.getElementById('hl'), hin=document.getElementById('heroIn'), nav=document.getElementById('nav');
-  const BR=1.12;                                    // brain's on-screen half-extent at scale 1, any turn
+  const BR=1.2;                                    // brain's on-screen half-extent at scale 1, any turn
   function resize(){ const w=host.clientWidth,h=host.clientHeight;
     cam.aspect=w/h; cam.updateProjectionMatrix(); rnd.setSize(w,h,false);
     const dpr=Math.min(devicePixelRatio,2); rnd.setPixelRatio(dpr); U.uDpr.value=dpr;
@@ -1197,18 +1212,17 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
       grp.position.x=0; baseY=(h/2-(top+bot)/2)*wpp; dim=1;
     }
     else{
-      /* fit the brain into the space right of the headline's actual ink,
-         centred on the text block, so it frames the title instead of
-         running into it; only on tight widths does it slip behind the fade */
+      /* the copy owns the left half; the brain sits centred in the right
+         half, clear of the headline's actual ink, and centred in the band
+         below the nav */
       const rg=document.createRange(); rg.selectNodeContents(hl);
       let tr=0; for(const r of rg.getClientRects()) tr=Math.max(tr,r.right-hr.left);
-      const sr=hin.parentElement.getBoundingClientRect().right-hr.left;  // content column's right edge
-      const L=tr+28, R=Math.min(w-40,sr+(w-sr)*.5);
-      s=Math.max(1.2,Math.min(1.68,(R-L)*wpp/(2*BR),h*.40*wpp/BR));
-      const cx=Math.max((L+R)/2,R-BR*s/wpp);
-      grp.position.x=(cx-w/2)*wpp;
-      const hb=hin.getBoundingClientRect(), cy=(hb.top+hb.bottom)/2-hr.top;
-      baseY=(h/2-cy)*wpp; dim=1;
+      for(const im of hin.querySelectorAll('.hero-logos img')) tr=Math.max(tr,im.getBoundingClientRect().right-hr.left);
+      const L=Math.max(tr+32,w/2), R=w-28;
+      const top=nav.offsetHeight;
+      s=Math.max(.75,Math.min(2.0,(R-L)*wpp/(2*BR),(h-top)*.44*wpp/BR));
+      grp.position.x=((L+R)/2-w*.05-w/2)*wpp;          // nudged left toward the copy
+      baseY=(h/2-(top+h)/2)*wpp; dim=1;
     }
     grp.scale.setScalar(s);
     hoverR=1.42*s*1.15;                             // hover/spin catchment ≈ the brain's own radius
