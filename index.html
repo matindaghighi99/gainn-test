@@ -76,6 +76,14 @@ nav.on .bar{height:72px}
 .brand b{font-weight:600;font-size:27px;letter-spacing:.13em;color:#F4F7FB}
 .brand .sub{font-family:var(--mono);font-size:9.5px;line-height:1.45;letter-spacing:.07em;color:var(--tx-faint);border-left:1px solid var(--line-2);padding-left:13px}
 .links{display:flex;align-items:center;gap:34px}
+/* nav spans the window (not the content column) and scales up on wide screens */
+@media(min-width:820px){
+  nav .shell.bar{width:calc(100vw - 2 * clamp(28px,4vw,72px))}
+  .brand b{font-size:clamp(27px,1.75vw,36px)}
+  .links{gap:clamp(34px,2.4vw,52px)}
+  .links a{font-size:clamp(15px,.95vw,18px)}
+  .links .btn{height:clamp(48px,3vw,58px)!important;font-size:clamp(15px,.95vw,18px)!important;padding:0 clamp(22px,1.6vw,30px)}
+}
 .links a{position:relative;white-space:nowrap;font-size:15px;font-weight:500;color:#B8C4D4;transition:color .3s}
 .links a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--blue);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
 .links a:not(.btn):hover,.links a:not(.btn).cur{color:#fff}
@@ -107,12 +115,16 @@ nav.on .bar{height:72px}
      crosses the pill in the first ~15% and the rest of the duration is unseen
      overshoot, so easing here would cap how slow this can actually look */
   transition:transform .9s linear}
-.btn.btn-ball:hover::after{transform:scale(24)}
+/* --bs is measured per button in JS so wide pills flood fully; 24 covers the nav pill */
+.btn.btn-ball:hover::after{transform:scale(var(--bs,24))}
 /* the red bloom is this button's hover fill; btn-3's tint sweep would race ahead of it as a second edge */
 .btn.btn-ball::before{content:none}
 /* label flips as the fill front sweeps past it — earlier reads dark-on-dark, later grey-on-red */
 .btn.btn-ball{transition:transform .35s var(--ease),border-color .4s,color .3s linear .15s}
 .btn.btn-ball:hover{border-color:var(--red);color:#0A0D12}
+/* already red at rest, so the bloom inverts to white */
+.btn-1.btn-ball::after{background:#fff}
+.btn-1.btn-ball:hover{border-color:#fff}
 .btn:active{transform:scale(.97)}
 
 /* ── hero ─────────────────────────────────────── */
@@ -136,9 +148,9 @@ nav.on .bar{height:72px}
   /* sized so "Engineering new ways to" (~11.9em) just fills the left half */
   #hl{font-size:calc((50vw - clamp(28px,4vw,72px) - 24px) / 12);white-space:normal}
   #hl .l1{white-space:nowrap}
-  /* "the brain." centred under "understand and shape": the wrapper shrinks to that line's width */
+  /* "the brain." on its own line, flush left with the lines above */
   #hl .l23{display:inline-block}
-  #hl .l3{display:block;text-align:center}
+  #hl .l3{display:block;text-align:left}
   .hero-in{margin-left:calc((var(--shell) - 100vw) / 2 + clamp(28px,4vw,72px));
     width:calc(50vw - clamp(28px,4vw,72px) - 24px)}
 }
@@ -151,11 +163,21 @@ nav.on .bar{height:72px}
 .lit .w i{transform:none}
 .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:40px}
 /* the two marks sit side by side, parted by a hairline — nothing else */
-.hero-logos{display:flex;align-items:center;gap:30px;margin-top:76px;flex-wrap:wrap}
+.hero-logos{display:flex;align-items:center;gap:clamp(30px,2.4vw,44px);margin-top:clamp(76px,7vw,120px);padding-left:clamp(0px,2.6vw,56px);flex-wrap:wrap}
 .hero-logos img{width:auto;display:block}
-.hero-logos img.gainn{height:clamp(96px,10.4vw,150px)}
-.hero-logos img.uoft{height:clamp(70px,7.6vw,110px)}
-.hero-logos .lg-div{flex:none;width:1px;height:clamp(66px,7.2vw,104px);background:var(--line-2)}
+.hero-logos img.gainn{height:clamp(110px,11.2vw,180px)}
+.hero-logos img.uoft{height:clamp(80px,8.2vw,130px)}
+.hero-logos .lg-div{flex:none;width:1px;height:clamp(76px,7.8vw,124px);background:var(--line-2)}
+/* desktop: keep both marks on one line — the row may run past the headline column (the brain steps aside) */
+@media(min-width:820px){ .hero-logos{flex-wrap:nowrap;width:max-content} }
+/* desktop: headline + logos form one block, nudged down/right, each centred on the other */
+@media(min-width:820px){
+  #hl{font-size:calc((50vw - clamp(28px,4vw,72px) - 24px) / 10)}
+  .hero-in{width:max-content;display:flex;flex-direction:column;align-items:center;
+    margin-left:calc((var(--shell) - 100vw) / 2 + clamp(28px,4vw,72px) + clamp(0px,2.6vw,56px));
+    padding-top:clamp(0px,4vw,80px)}
+  .hero-logos{padding-left:0}
+}
 .stats{display:flex;gap:44px;margin-top:56px;flex-wrap:wrap}
 .stat b{display:block;font-family:var(--serif);font-weight:400;font-size:42px;line-height:1;letter-spacing:-.012em;color:var(--tx-strong);font-variant-numeric:tabular-nums}
 .stat i{display:block;margin-top:9px;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tx-faint)}
@@ -207,6 +229,10 @@ nav.on .bar{height:72px}
 @media(min-width:1041px){ #program .h2{white-space:nowrap;font-size:min(62px,calc((100vw - 96px) / 19))} }
 .about-copy{max-width:620px;margin-left:auto;display:flex;flex-direction:column;gap:18px}
 .about-copy .lede{margin-left:0}
+/* copy on the left, the four pillars as a 2×2 beside it */
+.about-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:start;margin-top:clamp(28px,3vw,44px)}
+.about-split .about-copy{margin-left:0}
+.about-cards{grid-template-columns:repeat(2,1fr)}
 .duo2{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(32px,4vw,56px);align-items:start}
 .rail{position:relative;padding-left:38px;border-left:1px solid var(--line-blue)}
 .step{position:relative;padding-bottom:34px}
@@ -228,6 +254,33 @@ nav.on .bar{height:72px}
 .feat{display:grid;grid-template-columns:1.25fr 1fr;gap:32px}
 .shot{position:relative;height:250px;background:#090E15;border-bottom:1px solid var(--line);overflow:hidden}
 .shot svg{position:absolute;inset:0;width:100%;height:100%}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.thumb img{width:100%;height:100%;object-fit:cover;border-radius:14px}
+.thumb{overflow:hidden}
+/* single story: wide horizontal card — photo left, story right */
+.feat.solo{grid-template-columns:1fr}
+.feat.solo #newsList{display:none}
+.feat.solo #newsFeat{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);overflow:hidden;position:relative}
+.feat.solo #newsFeat::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(60% 80% at 100% 0%,rgba(132,162,218,.10),transparent 60%)}
+.feat.solo .shot{height:auto;min-height:460px;border-bottom:0;border-right:1px solid var(--line)}
+.feat.solo .shot img{object-position:78% 30%;filter:grayscale(.35) contrast(1.05) brightness(.92);transform:scale(1.02);transition:filter .8s var(--ease),transform 1.2s var(--ease)}
+.feat.solo #newsFeat:hover .shot img{filter:none;transform:scale(1.06)}
+.feat.solo .shot::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent 55%,rgba(12,17,25,.55)),linear-gradient(0deg,rgba(6,9,14,.55),transparent 40%)}
+.feat.solo .shot .cap{position:absolute;left:28px;bottom:24px;z-index:2;color:rgba(255,255,255,.78)}
+.feat.solo #newsFeatBody{display:flex;flex-direction:column;justify-content:center;padding:56px 56px!important;position:relative;z-index:1}
+.feat.solo #newsFeatBody::before{content:"";position:absolute;left:56px;top:0;width:64px;height:2px;background:linear-gradient(90deg,var(--red),transparent)}
+.nf-more{display:none;margin-top:12px;font-size:14.5px}
+.feat.solo .nf-more.on{display:block}
+.feat.solo #nfLink{align-self:flex-start;margin-top:30px!important}
+@media(max-width:860px){
+  .feat.solo #newsFeat{grid-template-columns:1fr}
+  .feat.solo .shot{min-height:280px;border-right:0;border-bottom:1px solid var(--line)}
+  .feat.solo .shot::after{background:linear-gradient(0deg,rgba(6,9,14,.55),transparent 45%)}
+  .feat.solo #newsFeatBody{padding:28px!important}
+  .feat.solo #newsFeatBody::before{left:28px}
+}
 .pill{display:inline-flex;align-items:center;height:27px;padding:0 12px;border-radius:999px;background:rgba(255,74,43,.18);color:var(--red-2);font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase}
 .item{position:relative;display:flex;gap:18px;padding:22px 0 22px 16px;margin-left:-16px;border-top:1px solid var(--line);border-radius:12px;transition:.45s var(--ease)}
 .item:first-child{border-top:0;padding-top:0}
@@ -249,6 +302,59 @@ nav.on .bar{height:72px}
 .date{width:88px;flex:none;padding:13px 0;border:1px solid rgba(132,162,218,.28);border-radius:15px;text-align:center;transition:.45s}
 .ev:hover .date{border-color:rgba(132,162,218,.6);background:rgba(132,162,218,.06)}
 .date b{display:block;font-family:var(--serif);font-weight:300;font-size:29px;line-height:1.2;color:var(--tx-strong)}
+/* event ticket — date stub | perforation | details | pinned poster */
+.tkt{--stub:220px;--n:15px;position:relative;display:grid;grid-template-columns:var(--stub) minmax(0,1fr) minmax(0,.95fr);
+  background:linear-gradient(115deg,#0E1520 0%,#0B1018 55%,#0D131D 100%);border-radius:20px;
+  -webkit-mask:radial-gradient(circle var(--n) at var(--stub) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at var(--stub) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+          mask:radial-gradient(circle var(--n) at var(--stub) 0,#0000 98%,#000) top/100% 51% no-repeat,radial-gradient(circle var(--n) at var(--stub) 100%,#0000 98%,#000) bottom/100% 51% no-repeat;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.tkt::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.012) 0 2px,transparent 2px 9px)}
+/* stub */
+.tkt-stub{position:relative;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:34px 30px;
+  background:linear-gradient(180deg,rgba(132,162,218,.10),rgba(132,162,218,.02));
+  border-right:2px dashed rgba(255,255,255,.13)}
+.tkt-stub .mo{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
+.tkt-stub .dd{display:block;margin-top:10px;font-family:var(--serif);font-weight:300;font-size:64px;line-height:.95;letter-spacing:-.03em;color:var(--tx-strong)}
+.tkt-stub .yr{display:block;margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--tx-faint)}
+.tkt-stamp{margin-top:28px;transform:rotate(-8deg);padding:7px 12px;border:1.5px solid rgba(255,74,43,.7);border-radius:6px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--red-2);
+  box-shadow:inset 0 0 0 3px rgba(255,74,43,.08);opacity:.85}
+.tkt-code{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--tx-faint);writing-mode:vertical-rl;transform:rotate(180deg);position:absolute;right:12px;bottom:30px}
+/* details */
+.tkt-main{display:flex;flex-direction:column;justify-content:center;padding:40px 40px 40px 44px}
+.tkt-kicker{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--tx-faint)}
+.tkt-kicker::before{content:"";width:22px;height:1px;background:var(--red)}
+.tkt-title{margin-top:16px;font-size:clamp(26px,2.4vw,34px);line-height:1.1}
+.tkt-lede{margin-top:12px}
+.tkt-rows{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin:24px 0 0;padding-top:18px;border-top:1px dashed var(--line-2)}
+.tkt-rows dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);padding-top:3px}
+.tkt-rows dd{margin:0;font-size:13.5px;line-height:1.5;color:var(--tx-body)}
+.tkt-cta{align-self:flex-start;margin-top:28px}
+/* pinned poster */
+.tkt-poster{position:relative;display:grid;place-items:center;padding:40px 44px 40px 8px}
+.tkt-poster a{position:relative;display:block;width:100%;transform:rotate(2.6deg);transition:transform .8s var(--ease)}
+.tkt-poster img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:8px;border:6px solid #E9EEF5;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.8),0 0 0 1px rgba(0,0,0,.4)}
+.tkt-poster a::before{content:"";position:absolute;z-index:2;left:50%;top:-12px;width:84px;height:24px;transform:translateX(-50%) rotate(-3deg);
+  background:rgba(176,196,232,.28);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);border-left:1px dashed rgba(255,255,255,.25);border-right:1px dashed rgba(255,255,255,.25)}
+.tkt:hover .tkt-poster a{transform:rotate(0) scale(1.02)}
+.ev-empty{display:flex;align-items:center;gap:14px;padding:40px 32px;border:1px dashed var(--line-2);border-radius:20px;background:var(--card)}
+@media(max-width:1100px){
+  .tkt{grid-template-columns:var(--stub) minmax(0,1fr)}
+  .tkt-poster{grid-column:1/-1;padding:8px 36px 44px;border-top:2px dashed rgba(255,255,255,.13)}
+  .tkt-poster a{max-width:560px;margin-top:28px}
+  .tkt{-webkit-mask:none;mask:none}
+}
+@media(max-width:680px){
+  .tkt{grid-template-columns:1fr}
+  .tkt-stub{flex-direction:row;align-items:center;flex-wrap:wrap;gap:18px;padding:24px;border-right:0;border-bottom:2px dashed rgba(255,255,255,.13)}
+  .tkt-stub .dd{font-size:44px}
+  .tkt-stamp{margin-top:0}
+  .tkt-code{display:none}
+  .tkt-main{padding:26px 24px}
+  .tkt-poster{padding:8px 24px 36px}
+}
 .fade{animation:fade .5s var(--ease)}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}}
 
@@ -344,8 +450,22 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .fp-div{width:60px;height:1px;background:linear-gradient(90deg,var(--footer),var(--line-2) 20%,var(--line-2) 80%,var(--footer))}
 }
 .word{font-family:var(--sans);font-weight:600;font-size:clamp(88px,17vw,238px);line-height:.8;letter-spacing:.05em;color:#0B0F16;text-align:center;user-select:none}
-.fgrid{display:grid;grid-template-columns:1.4fr .9fr 1.2fr;gap:52px}
+.fgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);justify-content:space-between;gap:52px}
 
+/* ── acknowledgement (NSERC) ─────────────────── */
+.ack{position:relative;margin:88px auto;padding:38px 44px 30px;border:1px solid var(--line-blue);border-radius:20px;overflow:hidden;
+  background:radial-gradient(50% 120% at 100% 0%,rgba(255,74,43,.07),transparent 60%),var(--card)}
+.ack::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#E8262B,rgba(232,38,43,0))}
+.ack-top{display:flex;align-items:center;justify-content:space-between;gap:40px}
+.ack-txt{max-width:760px}
+.ack-lead{margin-top:16px;font-family:var(--sans);font-weight:400;font-size:clamp(17px,1.4vw,20px);line-height:1.55;letter-spacing:-.006em;color:var(--tx-strong)}
+.ack-lead+.ack-lead{margin-top:12px}
+.ack-logo{flex:none;transition:transform .5s var(--ease)}
+.ack-logo:hover{transform:translateY(-3px)}
+.ack-logo img{height:72px;width:auto;display:block}
+.ack-sig{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+/* 736px is the signature file's native width — any larger and it upscales soft */
+.ack-sig img{display:block;box-sizing:content-box;width:736px;height:auto;max-width:calc(100% - 56px);margin:0 auto;padding:20px 28px;background:#fff;border-radius:12px}
 /* ── partners logo row (team section) ─────────── */
 .pls{display:flex;align-items:center;justify-content:space-between;margin:0 -22px}
 .pl{position:relative;flex:1 1 auto;display:grid;place-items:center;height:132px;padding:0 22px}
@@ -368,6 +488,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .two,.duo,.duo2,.feat,.fgrid{grid-template-columns:1fr}
   .duo .lede{margin-left:0;max-width:none}
   .about-copy{margin-left:0;max-width:none}
+  .about-split{grid-template-columns:1fr}
   .hero-in{max-width:100%}
 }
 /* narrow hero stacks: brain on top, title and logos beneath it. The copy is
@@ -403,7 +524,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .links .btn{margin-top:22px}
   .g3,.g4,.g5{grid-template-columns:1fr}
   .stats{gap:28px}
-  .hero-logos{gap:16px;margin-top:52px}
+  .hero-logos{gap:16px;margin-top:52px;padding-left:0}
   .hero-logos img.gainn{height:64px}
   .hero-logos img.uoft{height:46px}
   .hero-logos .lg-div{height:46px}
@@ -422,7 +543,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   .grid{gap:14px}
   .duo,.duo2{gap:22px}
   /* about */
-  #about .g4{grid-template-columns:1fr 1fr;margin-top:40px!important}
+  #about .g4{grid-template-columns:1fr 1fr}
   #about .g4 .card{padding:20px 15px}
   #about .g4 .ic{width:22px;height:22px}
   #about .g4 .micro{margin-top:18px!important}
@@ -475,7 +596,10 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   #contact .card[style*="padding:36px"]{padding:24px!important}
   #contact .fld[style*="margin-top"]{margin-top:16px!important}
   /* acknowledgement */
-  .shell.rv[style*="margin:88px"]{margin:60px auto!important;padding:26px 24px!important;gap:14px!important}
+  .ack{margin:60px auto;padding:26px 22px 22px}
+  .ack-top{flex-direction:column-reverse;align-items:flex-start;gap:20px}
+  .ack-logo img{height:52px}
+  .ack-lead{font-size:17px}
   /* footer */
   .foot-partners{padding:48px 0 40px}
   .foot-partners-row{gap:24px}
@@ -534,7 +658,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
 
   <div class="shell" style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;height:0">
     <div class="cue"><span class="ln"></span><span class="micro">Scroll</span></div>
-    <div class="hint">Move your cursor over the brain</div>
+    <div class="hint">Click and drag the brain to turn it</div>
   </div>
 </section>
 
@@ -547,22 +671,22 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
 <!-- ════ ABOUT ════ -->
 <section class="sec" id="about"><div class="shell">
   <div class="head rv"><span class="dot"></span><span class="eyebrow">About us</span><span class="rule"></span></div>
-  <div class="duo">
-    <h2 class="h2 rv">Graduate Advancement in <span class="it">Neuromodulation &amp; Neurotechnology</span></h2>
+  <h2 class="h2 rv">Graduate Advancement in <span class="it">Neuromodulation &amp; Neurotechnology</span></h2>
+  <div class="about-split">
     <div class="about-copy rv" style="--d:.1s">
       <p class="lede">The Graduate Advancement in Neuromodulation &amp; Neurotechnology (GAINN) program brings together engineering, neuroscience, and clinical research to prepare trainees to develop and evaluate technologies that interact with the nervous system.</p>
       <p class="body">Through interdisciplinary coursework, hands-on research, commercialization and entrepreneurship training, and opportunities for internships or academic exchanges, trainees build skills across the neurotechnology pipeline: from technology design and data analysis to mechanistic research and validation. GAINN aims to prepare collaborative, adaptable researchers and professionals to contribute to the growth of neurotechnology in Canada.</p>
     </div>
-  </div>
-  <div class="grid g4" style="margin-top:64px">
-    <div class="card rv sp" style="--d:0.00s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h4"/></svg>
-      <h3 class="ttl" style="margin-top:22px">Interdisciplinary coursework</h3></div>
-    <div class="card rv sp" style="--d:0.08s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>
-      <h3 class="ttl" style="margin-top:22px">Hands-on research</h3></div>
-    <div class="card rv sp" style="--d:0.16s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 17l5-5 4 3 9-9"/><path d="M16 6h5v5"/></svg>
-      <h3 class="ttl" style="margin-top:22px">Commercialization &amp; entrepreneurship training</h3></div>
-    <div class="card rv sp" style="--d:0.24s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-      <h3 class="ttl" style="margin-top:22px">Internships &amp; academic exchanges</h3></div>
+    <div class="grid g4 about-cards">
+      <div class="card rv sp" style="--d:0.00s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h4"/></svg>
+        <h3 class="ttl" style="margin-top:22px">Interdisciplinary coursework</h3></div>
+      <div class="card rv sp" style="--d:0.08s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>
+        <h3 class="ttl" style="margin-top:22px">Hands-on research</h3></div>
+      <div class="card rv sp" style="--d:0.16s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 17l5-5 4 3 9-9"/><path d="M16 6h5v5"/></svg>
+        <h3 class="ttl" style="margin-top:22px">Commercialization &amp; entrepreneurship training</h3></div>
+      <div class="card rv sp" style="--d:0.24s"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        <h3 class="ttl" style="margin-top:22px">Internships &amp; academic exchanges</h3></div>
+    </div>
   </div>
   <div class="card rv" style="margin-top:20px;padding:46px;display:flex;gap:30px;border-color:var(--line-blue);background:#080D15">
     <span style="font-family:var(--serif);font-size:70px;line-height:.62;color:var(--red)">&ldquo;</span>
@@ -594,7 +718,7 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
         <span class="seam" style="background:linear-gradient(90deg,transparent,rgba(255,74,43,.6),transparent)"></span>
         <span class="eyebrow" style="color:var(--red-2)">Questions?</span>
         <p class="body" style="margin:14px 0 22px;color:#C9BDB8">Get in touch with the GAINN team about the program.</p>
-        <a href="#contact" class="btn btn-1 mag" style="height:48px;font-size:13.5px"><span>Contact us
+        <a href="#contact" class="btn btn-1 btn-ball mag" style="height:48px;font-size:13.5px"><span>Contact us
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a>
       </div>
     </div>
@@ -608,33 +732,18 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
   <div class="feat">
     <article class="card rv" style="padding:0" id="newsFeat">
       <div class="shot">
-        <svg viewBox="0 0 640 250" preserveAspectRatio="none" aria-hidden="true">
-          <g stroke="rgba(132,162,218,.22)" fill="none"><path d="M-10 196 L86 132 L176 162 L276 80 L376 126 L476 64 L576 108 L650 62"/>
-          <path d="M-10 218 L106 232 L206 206 L316 230 L426 198 L536 220 L650 188"/>
-          <path d="M86 132 L106 232 M176 162 L206 206 M276 80 L316 230 M376 126 L426 198"/></g>
-          <g fill="#84A2DA"><circle cx="86" cy="132" r="3.5"/><circle cx="376" cy="126" r="3.5"/><circle cx="576" cy="108" r="3"/></g>
-          <g fill="#FF4A2B"><circle cx="276" cy="80" r="6"/><circle cx="476" cy="64" r="4.5"/></g>
-        </svg>
-        <span class="micro" style="position:absolute;left:28px;bottom:20px">[Feature image]</span>
-        <span class="pill" style="position:absolute;right:28px;top:22px">Featured</span>
+        <img id="nfImg" src="" alt="">
+        <span class="micro cap" id="nfCap"></span>
       </div>
       <div style="padding:34px" id="newsFeatBody">
-        <span class="micro" id="nfMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [SOURCE]</span>
-        <h3 class="h3" id="nfHead" style="margin-top:16px">[Featured headline — up to two lines.]</h3>
-        <p class="body" id="nfStand" style="margin-top:16px">[Standfirst — one line.]</p>
-        <a href="#news" style="display:inline-block;margin-top:22px;font-size:14px;font-weight:500">Read more →</a>
+        <span class="micro" id="nfMeta" style="letter-spacing:.06em;text-transform:none"></span>
+        <h3 class="h3" id="nfHead" style="margin-top:16px"></h3>
+        <p class="body" id="nfStand" style="margin-top:16px"></p>
+        <p class="body nf-more" id="nfMore"></p>
+        <a id="nfLink" class="btn btn-3 btn-ball mag" href="#news" target="_blank" rel="noopener" style="margin-top:22px"><span>Read the full story <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
       </div>
     </article>
-    <div class="rv" style="--d:.1s" id="newsList">
-      <div class="item" data-i="0"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-      <div class="item" data-i="1"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-      <div class="item" data-i="2"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-      <div class="item" data-i="3"><div class="thumb"><span class="micro" style="font-size:8.5px">[IMG]</span></div>
-        <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none">[DATE] · [CATEGORY]</span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px">[News headline]</h3></div></div>
-    </div>
+    <div class="rv" style="--d:.1s" id="newsList"></div>
   </div>
 </div></section>
 
@@ -642,24 +751,34 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
 <section class="sec band" id="events"><div class="shell">
   <div class="head rv"><span class="dot"></span><span class="eyebrow">Events</span><span class="rule"></span></div>
   <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:44px">
-    <h2 class="h2 rv">[Section heading]</h2>
-    <div class="tabs rv" role="tablist"><button class="tab" role="tab" aria-selected="true" data-p="up">Upcoming</button><button class="tab" role="tab" aria-selected="false" data-p="past">Past</button></div>
+    <h2 class="h2 rv">Conferences &amp; seminars</h2>
+    <div class="tabs rv" role="tablist"><button class="tab" role="tab" aria-selected="false" data-p="up">Upcoming</button><button class="tab" role="tab" aria-selected="true" data-p="past">Past</button></div>
   </div>
-  <div id="up" class="rv">
-    <div class="ev"><div class="date"><span class="micro" style="color:var(--blue)">[MON]</span><b>[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div></div>
-    <div class="ev"><div class="date"><span class="micro" style="color:var(--blue)">[MON]</span><b>[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div></div>
-    <div class="ev"><div class="date"><span class="micro" style="color:var(--blue)">[MON]</span><b>[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px">[Event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [TIME] · [REGISTRATION]</p></div></div>
+  <div id="up" class="rv" hidden>
+    <div class="ev-empty"><span class="dot"></span><p class="body">No upcoming events yet. Check back soon.</p></div>
   </div>
-  <div id="past" hidden>
-    <div class="ev"><div class="date" style="border-color:var(--line-2)"><span class="micro">[MON]</span><b style="color:#AEBCCE">[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px;color:#C3CEDD">[Past event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [RECAP LINK]</p></div>
-      <a href="#events" class="btn btn-3 mag"><span>Recap</span></a></div>
-    <div class="ev"><div class="date" style="border-color:var(--line-2)"><span class="micro">[MON]</span><b style="color:#AEBCCE">[00]</b></div>
-      <div style="flex:1"><h3 class="ttl" style="font-size:22px;color:#C3CEDD">[Past event title]</h3><p class="body" style="margin-top:6px">[LOCATION] · [RECAP LINK]</p></div>
-      <a href="#events" class="btn btn-3 mag"><span>Recap</span></a></div>
+  <div id="past" class="rv">
+    <article class="tkt">
+      <div class="tkt-stub">
+        <div><span class="mo">July</span><b class="dd">23–24</b><span class="yr">2026</span></div>
+        <span class="tkt-stamp">Concluded</span>
+        <span class="tkt-code">CRANIA · 2026 · TO</span>
+      </div>
+      <div class="tkt-main">
+        <span class="tkt-kicker">Conference · Two days</span>
+        <h3 class="ttl tkt-title">CRANIA 2026 Conference</h3>
+        <p class="body tkt-lede">Keynotes, workshops and panels on neuromodulation, in a special edition celebrating Toronto’s role in the history of Deep Brain Stimulation.</p>
+        <dl class="tkt-rows">
+          <dt>Venue</dt><dd>BMO Conference Centre, Krembil Discovery Tower · Toronto Western Hospital</dd>
+          <dt>Theme</dt><dd>Deep Brain Stimulation</dd>
+          <dt>With</dt><dd>Official satellite event of IEEE EMBC 2026</dd>
+        </dl>
+        <a href="https://site.pheedloop.com/event/crania2026/home" target="_blank" rel="noopener" class="btn btn-3 btn-ball mag tkt-cta"><span>Visit event site <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      </div>
+      <div class="tkt-poster">
+        <a href="https://site.pheedloop.com/event/crania2026/home" target="_blank" rel="noopener"><img src="assets/images/events/crania-2026.jpg" alt="CRANIA 2026 Conference poster — Krembil Discovery Tower, Toronto Western Hospital, July 23–24" loading="lazy"></a>
+      </div>
+    </article>
   </div>
 </div></section>
 
@@ -702,17 +821,24 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
       <div style="margin-top:20px;display:flex;align-items:center;gap:11px"><input id="c" type="checkbox" style="width:17px;height:17px;accent-color:var(--red)"><label for="c" style="font-family:var(--sans);font-size:13.5px;letter-spacing:-.004em;text-transform:none;color:var(--tx-mute)">Add me to the mailing list</label></div>
       <div style="margin-top:28px;padding-top:22px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
         <span style="font-size:13px;color:var(--tx-faint)">We reply within [X] days.</span>
-        <button class="btn btn-1 mag"><span>Send message</span></button>
+        <button class="btn btn-1 btn-ball mag"><span>Send message</span></button>
       </div>
     </div>
   </div>
 </div></section>
 
 <!-- ════ ACKNOWLEDGEMENT ════ -->
-<div class="shell rv" style="margin:88px auto;padding:34px 40px;border:1px solid var(--line-blue);border-radius:20px;display:flex;gap:34px;align-items:center;flex-wrap:wrap">
-  <span class="eyebrow" style="flex:none">Acknowledgement</span>
-  <p class="body" style="flex:1;min-width:280px">The GAINN program is supported by the Natural Sciences and Engineering Research Council of Canada (NSERC) through its Collaborative Research and Training Experience (CREATE) program.</p>
-</div>
+<section class="shell rv ack" aria-label="Acknowledgement">
+  <div class="ack-top">
+    <div class="ack-txt">
+      <span class="eyebrow">Acknowledgement</span>
+      <p class="ack-lead">We acknowledge the support of the Natural Sciences and Engineering Research Council of Canada (NSERC).</p>
+      <p class="ack-lead" lang="fr">Nous remercions le Conseil de recherches en sciences naturelles et en génie du Canada (CRSNG) de son soutien.</p>
+    </div>
+    <a class="ack-logo" href="https://nserc-crsng.canada.ca" target="_blank" rel="noopener"><img src="assets/images/partners/nserc-crsng-logo.png" alt="NSERC — CRSNG"></a>
+  </div>
+  <div class="ack-sig"><img src="assets/images/partners/nserc-canada-signature.png" alt="Natural Sciences and Engineering Research Council of Canada / Conseil de recherches en sciences naturelles et en génie du Canada — Canada" loading="lazy"></div>
+</section>
 
 <!-- ════ FOOTER ════ -->
 <footer>
@@ -734,13 +860,11 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
           <a href="#" class="ico" aria-label="YouTube"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B0C4E8" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M11 10l4 2-4 2z"/></svg></a>
         </div>
       </div>
-      <div><span class="micro">Partners</span><div style="margin-top:18px;display:flex;flex-direction:column;gap:11px;font-size:13.5px">
-        <a href="https://www.utoronto.ca" target="_blank" rel="noopener">University of Toronto</a><a href="https://www.uhn.ca" target="_blank" rel="noopener">University Health Network</a><a href="https://www.sickkids.ca" target="_blank" rel="noopener">SickKids</a><a href="https://www.camh.ca" target="_blank" rel="noopener">CAMH</a><a href="https://sunnybrook.ca" target="_blank" rel="noopener">Sunnybrook Health Sciences Centre</a></div></div>
       <div><span class="micro">Mailing list</span>
         <p class="body" style="margin:16px 0 20px;font-size:13.5px">Program news, seminars and application deadlines, straight to your inbox.</p>
         <div class="fld"><label for="fn">Name</label><input id="fn" type="text" placeholder="Your name" autocomplete="name" style="height:46px"></div>
         <div class="fld" style="margin-top:12px"><label for="fe">Email</label><input id="fe" type="email" placeholder="you@example.com" autocomplete="email" style="height:46px"></div>
-        <button class="btn btn-3 mag" style="width:100%;margin-top:14px"><span>Subscribe</span></button></div>
+        <button class="btn btn-3 btn-ball mag" style="width:100%;margin-top:14px"><span>Subscribe</span></button></div>
     </div>
   </div>
   <div class="shell" style="padding:22px 0 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
@@ -764,13 +888,14 @@ footer{position:relative;background:var(--footer);border-top:1px solid var(--lin
         <p class="aff" id="bxAff"></p>
         <div class="tags" id="bxTags"></div>
         <div class="bx-body" id="bxBody"></div>
-        <div class="bx-foot"><span class="micro">GAINN core team</span><a href="#contact" class="btn btn-3" id="bxCta"><span>Ask about supervision</span></a></div>
+        <div class="bx-foot"><span class="micro">GAINN core team</span><a href="#contact" class="btn btn-3 btn-ball" id="bxCta"><span>Ask about supervision</span></a></div>
       </div>
     </div>
   </div>
 </dialog>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/brain-data.js"></script>
 <script>
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -782,19 +907,21 @@ fill(t1, inst);
 /* ── news: auto-rotating feature, synced with the list — hover a
    headline to pin it, move away and the rotation picks back up ── */
 const NEWS = [
-  { date:'[DATE 1]', cat:'[CATEGORY 1]', source:'[SOURCE 1]',
-    head:'[News headline 1]', stand:'[Standfirst 1 — one line.]' },
-  { date:'[DATE 2]', cat:'[CATEGORY 2]', source:'[SOURCE 2]',
-    head:'[News headline 2]', stand:'[Standfirst 2 — one line.]' },
-  { date:'[DATE 3]', cat:'[CATEGORY 3]', source:'[SOURCE 3]',
-    head:'[News headline 3]', stand:'[Standfirst 3 — one line.]' },
-  { date:'[DATE 4]', cat:'[CATEGORY 4]', source:'[SOURCE 4]',
-    head:'[News headline 4]', stand:'[Standfirst 4 — one line.]' },
+  { date:'Apr 27, 2026', cat:'Funding', source:'U of T Biomedical Engineering',
+    head:'Professor Luka Milosevic awarded $1.65 million NSERC CREATE grant to advance neuromodulation training',
+    stand:'Professor Luka Milosevic has received a $1.65 million award from NSERC’s Collaborative Research and Training Experience program to lead CREATE GAINN, a new graduate training initiative in neuromodulation and neurotechnology.',
+    more:'Trainees will gain balanced exposure to real-world clinical challenges alongside advanced engineering methods, with pathways to develop and commercialize neuromodulation technologies through collaborative projects spanning universities, hospitals and industry partners.',
+    img:'assets/images/news/milosevic-nserc-create.jpg', alt:'Professor Luka Milosevic', cap:'Prof. Luka Milosevic',
+    url:'https://bme.utoronto.ca/news/professor-luka-milosevic-awarded-1-65-million-nserc-create-grant-to-advance-neuromodulation-training/' },
 ];
+newsList.innerHTML = NEWS.map((n,i)=>`<div class="item" data-i="${i}"><div class="thumb"><img src="${n.img}" alt="" loading="lazy"></div>
+  <div><span class="micro nMeta" style="letter-spacing:.06em;text-transform:none"></span><h3 class="ttl nHead" style="margin-top:6px;font-size:17px"></h3></div></div>`).join('');
+newsList.parentElement.classList.toggle('solo', NEWS.length < 2);
 const newsItems = [...newsList.querySelectorAll('.item[data-i]')];
 newsItems.forEach((el,i)=>{
   el.querySelector('.nMeta').textContent = `${NEWS[i].date} · ${NEWS[i].cat}`;
   el.querySelector('.nHead').textContent = NEWS[i].head;
+  el.addEventListener('click', ()=>window.open(NEWS[i].url, '_blank', 'noopener'));
 });
 let newsI = 0, newsTimer;
 function showNews(i){
@@ -803,12 +930,17 @@ function showNews(i){
   nfMeta.textContent = `${n.date} · ${n.source}`;
   nfHead.textContent = n.head;
   nfStand.textContent = n.stand;
+  nfImg.src = n.img; nfImg.alt = n.alt;
+  nfCap.textContent = n.cap || '';
+  nfMore.textContent = n.more || '';
+  nfMore.classList.toggle('on', !!n.more);
+  nfLink.href = n.url;
   newsItems.forEach((el,k)=>el.classList.toggle('active', k===i));
   if(!RM){ newsFeatBody.classList.remove('fade'); void newsFeatBody.offsetWidth; newsFeatBody.classList.add('fade'); }
 }
 function startNewsTimer(){
   clearInterval(newsTimer);
-  if(RM) return;
+  if(RM || NEWS.length < 2) return;
   newsTimer = setInterval(()=>showNews((newsI+1) % NEWS.length), 5000);
 }
 newsItems.forEach((el,i)=>el.addEventListener('mouseenter', ()=>{ clearInterval(newsTimer); showNews(i); }));
@@ -820,7 +952,7 @@ startNewsTimer();
 
 
 /* ── faculty ──────────────────────────────────── */
-const FAC = [{"n": "Taufik Valiante", "r": "Director, CRANIA", "a": "Toronto Western Hospital · Krembil Brain Institute", "img": "assets/images/team/taufik-valiante.jpg", "t": ["Neurosurgery", "Human single-neuron", "Neuromodulation"], "bio": ["Dr. Taufik Valiante is a neurosurgeon-scientist and Director of the Surgical Epilepsy Program at Toronto Western Hospital and a Scientist at the Krembil Brain Institute. His Neuron to Brain Lab studies the human brain at cellular resolution, combining direct recordings from single neurons with computational approaches to understand brain function and develop mechanism-based neuromodulation therapies.", "His research has advanced human neuroscience through studies of neuronal diversity, memory, active sensing, and single-neuron activity in freely moving people through the Brains in the Wild platform. His clinical research program has also advanced first-in-human neuromodulation approaches, including Canada’s first DBS for fentanyl use disorder.", "As Director of the CRANIA NeuroModulation Institute, he has helped build an interdisciplinary education and research ecosystem in neuromodulation and neurotechnology, including the Collaborative Specialization, BME1500, ECE441, and the undergraduate Certificate in Neuromodulation. He has trained more than 60 graduate students, postdoctoral and clinical fellows and has helped establish CRANIA as a leading national platform for neuromodulation research."]}, {"n": "Xilin Liu", "r": "Assistant Professor, ECE", "a": "University of Toronto · University Health Network", "img": "assets/images/team/xilin-liu.jpg", "t": ["Bioelectronics", "Closed-loop", "Edge AI"], "bio": ["Xilin Liu is an Assistant Professor in the Edward S. Rogers Sr. Department of Electrical and Computer Engineering at the University of Toronto and an affiliated scientist at the University Health Network (UHN). He received his PhD from the University of Pennsylvania. Before joining the University of Toronto, he held industry positions at Qualcomm Inc. in San Diego, California.", "His research interests include mixed-signal circuit design and system integration for emerging applications. Through CRANIA-related research projects, his team develops low-power wireless implantable and wearable bioelectronic devices for multimodal neural interfacing and closed-loop neuromodulation. His team also explores edge AI–enabled neuromodulation to support therapeutic interventions for neurological disorders and investigate fundamental neural mechanisms."]}, {"n": "J. Paul Santerre", "r": "Medical polymers · Innovation", "a": "University of Toronto", "img": "assets/images/team/paul-santerre.jpg", "t": ["Biomaterials", "70+ patents", "Venture creation"], "bio": ["J. Paul Santerre has published more than 250 peer-reviewed publications and is listed as an inventor on more than 70 patents in the area of medical polymers. He was a co-founder and director of an early-stage focused entrepreneurial incubator (H2i) that has trained more than 1,000 client health science companies, which over the last decade have generated more than $750M CDN.", "He was the co-founder of Interface Biologics and several other venture spin-outs, and received the Governor General’s award for Entrepreneurship. His lab’s science has been recognized with an honorary doctorate from McMaster University, and many fellowship recognitions for the lab’s scientific discoveries, along with many other research and innovation awards."]}, {"n": "Jiannis Taxidis", "r": "Scientist, SickKids", "a": "Asst. Professor, Physiology · University of Toronto", "img": "assets/images/team/jiannis-taxidis.jpg", "t": ["Memory", "In vivo imaging", "Computational"], "bio": ["Dr. Taxidis is a Scientist in the Neurosciences & Mental Health Program at The Hospital for Sick Children (SickKids) and an Assistant Professor at the Department of Physiology, University of Toronto. Trained in physics and mathematics, he moved from computational modelling of hippocampal networks (PhD, postdoc at Caltech) to in vivo imaging in behaving mice (postdoc at UCLA).", "His research focuses on network mechanisms underlying learning and memory in health and brain disorders. He studies how hippocampal ensembles form “time cell” sequences that bridge temporal gaps, how plasticity rules establish these sequences, and how interneuronal subtypes shape their dynamics.", "His laboratory combines cutting-edge imaging methods on mice in vivo (two-photon calcium imaging, voltage imaging, holographic optogenetics) with complex behavioural assays and computational modeling. His goal is to understand how neuronal circuits encode experiences and their temporal intervals, store them as memory, and how these processes break down in conditions associated with memory deficits, such as schizophrenia."]}, {"n": "Helen Tran", "r": "Assistant Professor, Chemistry", "a": "University of Toronto · Cross-appointed, Chemical Engineering", "img": "assets/images/team/helen-tran.jpg", "t": ["Polymers", "Functional materials", "Chemistry"], "bio": ["Dr. Tran is an Assistant Professor at the University of Toronto in the Department of Chemistry (cross-appointed in the Department of Chemical Engineering). Her research program centers on polymers with defined sequence and architecture to develop emergent functional materials.", "She was an Intelligence Community postdoctoral fellow with Prof. Bao at Stanford University, a National Defense Science and Engineering Graduate fellow with Prof. Campos at Columbia University, a post-baccalaureate fellow with Dr. Zuckermann at the Molecular Foundry, and an undergraduate at UC Berkeley."]}, {"n": "José Zariffa", "r": "KITE Chair in SCI Research", "a": "KITE Research Institute, UHN · Professor, IBME", "img": "assets/images/team/jose-zariffa.jpg", "t": ["Neuroprosthetics", "Wearables", "Machine learning"], "bio": ["José Zariffa is the KITE Chair in Spinal Cord Injury Research, a Senior Scientist, and the Associate Director, Scientific at the KITE Research Institute, Toronto Rehabilitation Institute – University Health Network. He is also a Professor at the Institute of Biomedical Engineering at the University of Toronto.", "His research interests focus on neuroprosthetics and technology for upper limb neurorehabilitation, encompassing work in wearable sensors, neural interfaces, electrophysiology, and machine learning. His team was awarded the Grand Prize in the Spinal Cord Rehab Innovation Challenge, a national competition focused on new tools to measure rehab activities and their impact."]}, {"n": "Cindi Morshead", "r": "Professor & Chair, Anatomy", "a": "Department of Surgery · University of Toronto", "img": "assets/images/team/cindi-morshead.jpg", "t": ["Neural stem cells", "Regenerative medicine", "Brain organoids"], "bio": ["Dr. Cindi Morshead is a leader in neural stem cell biology and regenerative medicine. She was part of the team that first identified neural stem cells in the adult mammalian brain, and her research has defined the fundamental biology of these cells — the factors regulating their quiescence, activation, and migration, and their role in injury and disease.", "With the goal of harnessing their potential for neural repair, her work has included transplanting reprogrammed neural stem cells, activating resident neural stem cells in the brain to enhance neural regeneration and repair, and more recently, to a gene therapy approach to enhance neurogenesis. Her lab uses human cerebral organoids to model brain aging and disease and to develop novel therapeutics. She has sustained success securing competitive funding to advance her science and contributed to clinical trials based on her lab’s expertise.", "Dr. Morshead is a Professor and Chair of the Division of Anatomy, Department of Surgery, at the University of Toronto, with cross-appointments at the Donnelly Centre, KITE/Toronto Rehabilitation Institute, and CRANIA at University Health Network. She has held numerous leadership positions throughout her career. Her work has been recognized with innovation awards, multiple patents, and she has garnered recognition with scientific and mentorship awards."]}, {"n": "Luka Milosevic", "r": "Co-Director, CRANIA", "a": "Institute of Biomedical Engineering · Krembil Brain Institute, UHN", "img": "assets/images/team/luka-milosevic.jpg", "t": ["Neuromodulation", "Intracranial recordings", "Deep brain stimulation"], "bio": ["Luka Milosevic received his PhD in Biomedical Engineering from the University of Toronto, after which he pursued a Postdoctoral Fellowship at University of Tübingen Institute for Neuromodulation and Neurotechnology, Germany. His research is at the intersection of biomedical engineering and neuroscience, and the focus of his program is on the development of novel data-driven methods of neuromodulation and brain stimulation.", "His lab specializes in intracranial and whole-brain neurophysiological recordings in people with neurological disorders, as well as optical, electrophysiological, and behavioural techniques in preclinical models. Dr. Milosevic and his team also play a clinical role monitoring patients’ brain activity to guide the placement of deep brain stimulation (DBS) devices at the Toronto Western Hospital. Outside of work, Luka enjoys hiking, biking, and travel!", "He is an Associate Professor at the Institute of Biomedical Engineering, University of Toronto, a Scientist at the Krembil Brain Institute, University Health Network, and Co-Director of the Centre for Advancing Neurotechnological Innovation to Application (CRANIA)."]}];
+const FAC = [{"n": "John Griffiths", "r": "Scientist, CAMH", "a": "Krembil Centre for Neuroinformatics, CAMH · Asst. Professor, Psychiatry & BME", "img": "assets/images/team/john-griffiths.jpg", "t": ["Brain stimulation", "Network modelling", "Neuroimaging"], "bio": ["John Griffiths is an Asst. Prof. of Psychiatry and BME (UofT), and Scientist at CAMH Krembil Centre for Neuroinformatics, where he leads an interdisciplinary team focused on whole-brain and multi-scale neurophysiological imaging and modelling of the effects of non-invasive brain stimulation (transcranial magnetic/AC/DC stimulation, focused ultrasound, etc.).", "His work involves computational modelling and human neurophysiology and imaging (EEG, fNIRS, s/fMRI). His work spans mathematical neuroscience, brain network modelling, neurotechnology, neuroimaging, and scientific computing."]}, {"n": "Xilin Liu", "r": "Assistant Professor, ECE", "a": "University of Toronto · University Health Network", "img": "assets/images/team/xilin-liu.jpg", "t": ["Bioelectronics", "Closed-loop", "Edge AI"], "bio": ["Xilin Liu is an Assistant Professor in the Edward S. Rogers Sr. Department of Electrical and Computer Engineering at the University of Toronto and an affiliated scientist at the University Health Network (UHN). He received his PhD from the University of Pennsylvania. Before joining the University of Toronto, he held industry positions at Qualcomm Inc. in San Diego, California.", "His research interests include mixed-signal circuit design and system integration for emerging applications. Through CRANIA-related research projects, his team develops low-power wireless implantable and wearable bioelectronic devices for multimodal neural interfacing and closed-loop neuromodulation. His team also explores edge AI–enabled neuromodulation to support therapeutic interventions for neurological disorders and investigate fundamental neural mechanisms."]}, {"n": "Luka Milosevic", "r": "Co-Director, CRANIA", "a": "Institute of Biomedical Engineering · Krembil Brain Institute, UHN", "img": "assets/images/team/luka-milosevic.jpg", "t": ["Neuromodulation", "Intracranial recordings", "Deep brain stimulation"], "bio": ["Luka Milosevic received his PhD in Biomedical Engineering from the University of Toronto, after which he pursued a Postdoctoral Fellowship at University of Tübingen Institute for Neuromodulation and Neurotechnology, Germany. His research is at the intersection of biomedical engineering and neuroscience, and the focus of his program is on the development of novel data-driven methods of neuromodulation and brain stimulation.", "His lab specializes in intracranial and whole-brain neurophysiological recordings in people with neurological disorders, as well as optical, electrophysiological, and behavioural techniques in preclinical models. Dr. Milosevic and his team also play a clinical role monitoring patients’ brain activity to guide the placement of deep brain stimulation (DBS) devices at the Toronto Western Hospital. Outside of work, Luka enjoys hiking, biking, and travel!", "He is an Associate Professor at the Institute of Biomedical Engineering, University of Toronto, a Scientist at the Krembil Brain Institute, University Health Network, and Co-Director of the Centre for Advancing Neurotechnological Innovation to Application (CRANIA)."]}, {"n": "Cindi Morshead", "r": "Professor & Chair, Anatomy", "a": "Department of Surgery · University of Toronto", "img": "assets/images/team/cindi-morshead.jpg", "t": ["Neural stem cells", "Regenerative medicine", "Brain organoids"], "bio": ["Dr. Cindi Morshead is a leader in neural stem cell biology and regenerative medicine. She was part of the team that first identified neural stem cells in the adult mammalian brain, and her research has defined the fundamental biology of these cells — the factors regulating their quiescence, activation, and migration, and their role in injury and disease.", "With the goal of harnessing their potential for neural repair, her work has included transplanting reprogrammed neural stem cells, activating resident neural stem cells in the brain to enhance neural regeneration and repair, and more recently, to a gene therapy approach to enhance neurogenesis. Her lab uses human cerebral organoids to model brain aging and disease and to develop novel therapeutics. She has sustained success securing competitive funding to advance her science and contributed to clinical trials based on her lab’s expertise.", "Dr. Morshead is a Professor and Chair of the Division of Anatomy, Department of Surgery, at the University of Toronto, with cross-appointments at the Donnelly Centre, KITE/Toronto Rehabilitation Institute, and CRANIA at University Health Network. She has held numerous leadership positions throughout her career. Her work has been recognized with innovation awards, multiple patents, and she has garnered recognition with scientific and mentorship awards."]}, {"n": "J. Paul Santerre", "r": "Medical polymers · Innovation", "a": "University of Toronto", "img": "assets/images/team/paul-santerre.jpg", "t": ["Biomaterials", "70+ patents", "Venture creation"], "bio": ["J. Paul Santerre has published more than 250 peer-reviewed publications and is listed as an inventor on more than 70 patents in the area of medical polymers. He was a co-founder and director of an early-stage focused entrepreneurial incubator (H2i) that has trained more than 1,000 client health science companies, which over the last decade have generated more than $750M CDN.", "He was the co-founder of Interface Biologics and several other venture spin-outs, and received the Governor General’s award for Entrepreneurship. His lab’s science has been recognized with an honorary doctorate from McMaster University, and many fellowship recognitions for the lab’s scientific discoveries, along with many other research and innovation awards."]}, {"n": "Bojana Stefanovic", "r": "Senior Scientist, Sunnybrook", "a": "Sunnybrook Research Institute · Professor, Medical Biophysics", "img": "assets/images/team/bojana-stefanovic.jpg", "t": ["Functional MRI", "Two-photon imaging", "Neurovascular"], "bio": ["Dr. Stefanovic is a Senior Scientist and Director of Physical Sciences at the Sunnybrook Research Institute, and a Professor in the Department of Medical Biophysics at the University of Toronto. Dr. Stefanovic holds a Tier 1 Canada Research Chair in Functional Brain Neuroimaging.", "Her research focuses on the development of new methods for quantitative in vivo imaging of brain function. Her laboratory works on the development and application of in vivo high field functional MRI, two-photon fluorescence microscopy, and ultra-high density extracellular recordings of neuronal activity. Her team is investigating neurovascular dysfunction in transgenic models of Alzheimer’s disease, during chronic stage of recovery from focal ischemic stroke and following traumatic brain injury. Dr. Stefanovic’s laboratory is also working on the development of effective neuromodulation protocols in dementia and stroke.", "Dr. Stefanovic is a faculty member of the Toronto Initiative for Diversity and Excellence (TIDE)."]}, {"n": "Jiannis Taxidis", "r": "Scientist, SickKids", "a": "Asst. Professor, Physiology · University of Toronto", "img": "assets/images/team/jiannis-taxidis.jpg", "t": ["Memory", "In vivo imaging", "Computational"], "bio": ["Dr. Taxidis is a Scientist in the Neurosciences & Mental Health Program at The Hospital for Sick Children (SickKids) and an Assistant Professor at the Department of Physiology, University of Toronto. Trained in physics and mathematics, he moved from computational modelling of hippocampal networks (PhD, postdoc at Caltech) to in vivo imaging in behaving mice (postdoc at UCLA).", "His research focuses on network mechanisms underlying learning and memory in health and brain disorders. He studies how hippocampal ensembles form “time cell” sequences that bridge temporal gaps, how plasticity rules establish these sequences, and how interneuronal subtypes shape their dynamics.", "His laboratory combines cutting-edge imaging methods on mice in vivo (two-photon calcium imaging, voltage imaging, holographic optogenetics) with complex behavioural assays and computational modeling. His goal is to understand how neuronal circuits encode experiences and their temporal intervals, store them as memory, and how these processes break down in conditions associated with memory deficits, such as schizophrenia."]}, {"n": "Helen Tran", "r": "Assistant Professor, Chemistry", "a": "University of Toronto · Cross-appointed, Chemical Engineering", "img": "assets/images/team/helen-tran.jpg", "t": ["Polymers", "Functional materials", "Chemistry"], "bio": ["Dr. Tran is an Assistant Professor at the University of Toronto in the Department of Chemistry (cross-appointed in the Department of Chemical Engineering). Her research program centers on polymers with defined sequence and architecture to develop emergent functional materials.", "She was an Intelligence Community postdoctoral fellow with Prof. Bao at Stanford University, a National Defense Science and Engineering Graduate fellow with Prof. Campos at Columbia University, a post-baccalaureate fellow with Dr. Zuckermann at the Molecular Foundry, and an undergraduate at UC Berkeley."]}, {"n": "Taufik Valiante", "r": "Director, CRANIA", "a": "Toronto Western Hospital · Krembil Brain Institute", "img": "assets/images/team/taufik-valiante.jpg", "t": ["Neurosurgery", "Human single-neuron", "Neuromodulation"], "bio": ["Dr. Taufik Valiante is a neurosurgeon-scientist and Director of the Surgical Epilepsy Program at Toronto Western Hospital and a Scientist at the Krembil Brain Institute. His Neuron to Brain Lab studies the human brain at cellular resolution, combining direct recordings from single neurons with computational approaches to understand brain function and develop mechanism-based neuromodulation therapies.", "His research has advanced human neuroscience through studies of neuronal diversity, memory, active sensing, and single-neuron activity in freely moving people through the Brains in the Wild platform. His clinical research program has also advanced first-in-human neuromodulation approaches, including Canada’s first DBS for fentanyl use disorder.", "As Director of the CRANIA NeuroModulation Institute, he has helped build an interdisciplinary education and research ecosystem in neuromodulation and neurotechnology, including the Collaborative Specialization, BME1500, ECE441, and the undergraduate Certificate in Neuromodulation. He has trained more than 60 graduate students, postdoctoral and clinical fellows and has helped establish CRANIA as a leading national platform for neuromodulation research."]}, {"n": "Paul Yoo", "r": "Associate Professor, BME", "a": "University of Toronto · Cross-appointed, ECE", "img": "assets/images/team/paul-yoo.jpg", "t": ["Neuromodulation", "Med-tech ventures", "Industry training"], "bio": ["Paul Yoo is an Assoc. Prof. and Assoc. Director of Professional Programs at BME (UofT), and cross-appointed to ECE.", "Based on novel discoveries in his lab, he co-founded EBT Medical Inc., a Toronto-based Med-Tech start-up aimed at developing neuromodulation therapies for overactive bladder, where he serves as President and Chief Science Officer. Prof. Yoo will lead training programs related to industry preparation, academic-industry collaboration, regulatory processes, and intellectual property."]}, {"n": "José Zariffa", "r": "KITE Chair in SCI Research", "a": "KITE Research Institute, UHN · Professor, IBME", "img": "assets/images/team/jose-zariffa.jpg", "t": ["Neuroprosthetics", "Wearables", "Machine learning"], "bio": ["José Zariffa is the KITE Chair in Spinal Cord Injury Research, a Senior Scientist, and the Associate Director, Scientific at the KITE Research Institute, Toronto Rehabilitation Institute – University Health Network. He is also a Professor at the Institute of Biomedical Engineering at the University of Toronto.", "His research interests focus on neuroprosthetics and technology for upper limb neurorehabilitation, encompassing work in wearable sensors, neural interfaces, electrophysiology, and machine learning. His team was awarded the Grand Prize in the Spinal Cord Rehab Innovation Challenge, a national competition focused on new tools to measure rehab activities and their impact."]}];
 const arrow = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 faculty.innerHTML = FAC.map((p,i)=>`
  <button type="button" class="card fac rv sp" style="--d:${(i%3)*.08}s" data-i="${i}" aria-haspopup="dialog" aria-label="Read bio: ${p.n}">
@@ -893,6 +1025,11 @@ document.addEventListener('mousemove',ev=>{
   const c=ev.target.closest?.('.sp'); if(!c)return; const r=c.getBoundingClientRect();
   c.style.setProperty('--mx',(ev.clientX-r.left)+'px'); c.style.setProperty('--my',(ev.clientY-r.top)+'px');
 });
+/* scale the bloom so it reaches the far corner from its 11px seed (centre 17.5px from the left) */
+document.querySelectorAll('.btn-ball').forEach(b=>b.addEventListener('pointerenter',()=>{
+  const r=b.getBoundingClientRect();
+  b.style.setProperty('--bs',(Math.max(24,Math.hypot(r.width-17.5,r.height/2)*2/11+1)).toFixed(1));
+}));
 if(!RM) document.querySelectorAll('.mag').forEach(b=>{
   b.addEventListener('mousemove',ev=>{ const r=b.getBoundingClientRect();
     b.style.transform=`translate(${(ev.clientX-r.left-r.width/2)*.16}px,${(ev.clientY-r.top-r.height/2)*.28}px)`; });
@@ -912,7 +1049,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
 
 /* ════════ 3D BRAIN ════════ */
 (function(){
-  if(typeof THREE==='undefined') return;
+  if(typeof THREE==='undefined' || !window.BRAIN_DATA) return;
   const host=document.getElementById('gl');
   const scene=new THREE.Scene();
   const cam=new THREE.PerspectiveCamera(42,1,.1,100); cam.position.set(0,0,7.1);
@@ -921,287 +1058,219 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
 
   const grp=new THREE.Group(); grp.position.set(1.82,.12,0); scene.add(grp);
 
-  /* ── anatomical point cloud ──────────────────────────────────
-     x = left/right, y = up/down, z = anterior(+)/posterior(-).
-     The solid is lofted from two silhouettes rather than deformed out of a
-     sphere: a lateral outline (frontal pole, parietal vertex, occipital
-     taper, temporal lobe under the lateral fissure) and a superior
-     half-width profile (narrow at the frontal poles, widest behind centre).
-     A sphere has no lobes to find, so no amount of displacement recovers
-     them; taking both views gives the side and top reads at once.
-     Cerebellum and brainstem are sampled separately, and the fissures and
-     sulci are carved out of the field so they stay dark. */
+  /* ── the BrainFacts brain, as dots and lines ─────────────────
+     The form is the BrainFacts.org 3D Brain (Society for Neuroscience):
+     both hemispheres, cerebellum and brainstem, baked offline into
+     assets/brain-data.js. Every sulcus painted on its cortex was thinned to
+     a centre-line, so the line pattern is that brain's own folding. The
+     cerebellum carries its folia, the stem its fibre bands. Dots stipple
+     the gyral crowns, a node marks each point where sulci meet, and a
+     coarse copy of the surface writes depth only so the far side stays
+     hidden instead of showing through. */
   const LOW = innerWidth < 900 || matchMedia('(hover:none)').matches;
-  const pos=[], seed=[], size=[], part=[];
+  const D=window.BRAIN_DATA, q=D.q;
+  const dec=(s,T)=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new T(u.buffer);};
+  /* octahedral normal, two signed bytes */
+  const oct=(a,i)=>{ let x=a[i*2]/127, y=a[i*2+1]/127, z=1-Math.abs(x)-Math.abs(y);
+    if(z<0){ const ox=x; x=(1-Math.abs(y))*(x>=0?1:-1); y=(1-Math.abs(ox))*(y>=0?1:-1); }
+    const L=Math.hypot(x,y,z)||1; return [x/L,y/L,z/L]; };
 
-  const sstep=(a,b,t)=>{const v=Math.min(1,Math.max(0,(t-a)/(b-a)));return v*v*(3-2*v);};
-  const bump=(t,w)=>Math.exp(-.5*(t/w)*(t/w));
-  const CY=.08;                                     // the brain's own centre height
-  /* The gyral field: sulci are the zero set of 3D gradient noise. Bands
-     wrapped round one axis read as gyri only side-on — end-on they converge
-     into a rosette and from above into a rolled pinecone. The zero set of
-     noise is a labyrinth from every direction, which is what a cortex is.
-     It is domain-warped so the grooves meander rather than wobble, stretched
-     a little along z so gyri lean front-to-back as real ones do, and sampled
-     on |x| so the hemispheres mirror each other. A seeded table keeps the
-     same brain on every load. */
-  const PRM=new Uint8Array(512);
-  { let s=0x9e3779b9; const r=()=>{s=(s+0x6d2b79f5)|0;let q=Math.imul(s^s>>>15,1|s);
-      q=q+Math.imul(q^q>>>7,61|q)^q;return((q^q>>>14)>>>0)/4294967296;};
-    const b=[...Array(256).keys()];
-    for(let i=255;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
-    for(let i=0;i<512;i++) PRM[i]=b[i&255]; }
-  const fd=t=>t*t*t*(t*(t*6-15)+10), lp=(a,b,t)=>a+t*(b-a);
-  const gr=(h,x,y,z)=>{h&=15;const u=h<8?x:y,v=h<4?y:(h===12||h===14?x:z);
-    return((h&1)?-u:u)+((h&2)?-v:v);};
-  function noise(x,y,z){
-    const X=Math.floor(x),Y=Math.floor(y),Z=Math.floor(z);
-    x-=X;y-=Y;z-=Z; const xi=X&255,yi=Y&255,zi=Z&255;
-    const u=fd(x),v=fd(y),w=fd(z);
-    const A=PRM[xi]+yi,AA=PRM[A]+zi,AB=PRM[A+1]+zi,B=PRM[xi+1]+yi,BA=PRM[B]+zi,BB=PRM[B+1]+zi;
-    return lp(lp(lp(gr(PRM[AA],x,y,z),gr(PRM[BA],x-1,y,z),u),
-                 lp(gr(PRM[AB],x,y-1,z),gr(PRM[BB],x-1,y-1,z),u),v),
-              lp(lp(gr(PRM[AA+1],x,y,z-1),gr(PRM[BA+1],x-1,y,z-1),u),
-                 lp(gr(PRM[AB+1],x,y-1,z-1),gr(PRM[BB+1],x-1,y-1,z-1),u),v),w);
+  /* dots — stored shuffled, so phones simply take the first part */
+  const dP=dec(D.dP,Int16Array), dN=dec(D.dN,Int8Array), dG=dec(D.dG,Uint8Array), dK=dec(D.dK,Uint8Array);
+  const ND=Math.floor(dK.length*(LOW?.55:1));
+  const pos=new Float32Array(ND*3), nrm=new Float32Array(ND*3), gyr=new Float32Array(ND), part=new Float32Array(ND), seed=new Float32Array(ND), size=new Float32Array(ND);
+  for(let i=0;i<ND;i++){
+    const n=oct(dN,i);
+    for(let k=0;k<3;k++){ pos[i*3+k]=dP[i*3+k]*q; nrm[i*3+k]=n[k]; }
+    gyr[i]=dG[i]/255; part[i]=dK[i]; seed[i]=Math.random();
+    size[i]=dK[i]===4 ? 2.3+Math.random()*.4 : Math.random()<.03 ? 1.9+Math.random()*.5 : .95+Math.random()*.5;
   }
-  const FQ=4.7;
-  const fold=(x,y,z)=>{
-    const ax=Math.abs(x);
-    const wx=ax+.30*noise(ax*1.4+3.1,y*1.4,z*1.4),
-          wy=y +.30*noise(ax*1.4,y*1.4+7.7,z*1.4),
-          wz=z +.30*noise(ax*1.4,y*1.4,z*1.4+1.9);
-    return noise(wx*FQ+11.3,wy*FQ,wz*FQ*.78);
-  };
-  /* distance to the nearest sulcus. The central sulcus is added by hand —
-     it is the one groove everyone recognises, running from the vertex down
-     and forward to the lateral fissure and splitting frontal from parietal */
-  const foldW=(x,y,z)=>{
-    let s=Math.abs(fold(x,y,z));
-    if(y>.02){
-      const cz=.02+.24*(.80-y)+.035*Math.sin(11*y+1.3*Math.abs(x));
-      s=Math.min(s,Math.abs(z-cz)*.85+.012);
-    }
-    return s;
-  };
-  const nrm=[], gyr=[];
-  const push=(x,y,z,k,nx,ny,nz,gy)=>{ pos.push(x,y,z); seed.push(Math.random());
-    size.push((k===0?1.35:1.15)+Math.random()*.7); part.push(k);
-    nrm.push(nx,ny,nz); gyr.push(gy===undefined?1:gy); };
-
-  /* lateral silhouette, traced clockwise from the frontal pole; the last
-     nine points run back along the lateral fissure and the orbital surface */
-  const PROF=[[1.00,.10],[.94,.38],[.82,.58],[.64,.72],[.42,.80],[.16,.82],
-    [-.12,.80],[-.40,.72],[-.64,.58],[-.84,.36],[-.95,.12],[-1.00,-.10],
-    [-.96,-.28],[-.84,-.40],[-.66,-.45],[-.48,-.51],[-.28,-.56],[-.06,-.61],
-    [.18,-.63],[.40,-.59],[.58,-.48],[.66,-.34],
-    [.60,-.26],[.42,-.21],[.22,-.18],[.04,-.17],
-    [.12,-.11],[.34,-.12],[.56,-.14],[.76,-.10],[.92,.00]];
-  const NPF=PROF.length;
-  function inProf(z,y){
-    let c=false;
-    for(let i=0,j=NPF-1;i<NPF;j=i++){
-      const zi=PROF[i][0],yi=PROF[i][1],zj=PROF[j][0],yj=PROF[j][1];
-      if((yi>y)!==(yj>y) && z<(zj-zi)*(y-yi)/(yj-yi)+zi) c=!c;
-    }
-    return c;
-  }
-  /* superior silhouette: half-width along the length */
-  const WID=[[1.00,.33],[.80,.51],[.60,.64],[.35,.74],[.10,.80],
-    [-.15,.84],[-.40,.83],[-.62,.74],[-.80,.57],[-.92,.38],[-1.00,.20]];
-  function halfW(z){
-    if(z>=WID[0][0]) return WID[0][1];
-    for(let i=1;i<WID.length;i++) if(z>=WID[i][0]){
-      const a=WID[i-1],b=WID[i];
-      return b[1]+(a[1]-b[1])*((z-b[0])/(a[0]-b[0]));
-    }
-    return WID[WID.length-1][1];
-  }
-  /* coronal taper: a dome, widest through the temporal lobes rather than mid-height */
-  const vTap=y=>{
-    const yn=Math.min(1,Math.max(0,(y+.62)/1.44));
-    return .34+.66*Math.pow(Math.sin(Math.PI*Math.pow(yn,.60)),.58);
-  };
-  /* crown height along the length, so each hemisphere can be rounded down
-     into the midline — without it the cross-section is a slab with a slit
-     and the front and top views read as one ball, not two hemispheres */
-  const TOP=[];
-  for(let i=0;i<=210;i++){ const z=-1.05+i*.01; let y=.9;
-    while(y>-.7 && !inProf(z,y)) y-=.01; TOP.push(y); }
-  const topY=z=>TOP[Math.min(210,Math.max(0,Math.round((z+1.05)/.01)))];
-  const GAP=.05, MR=.30;
-  const inCereb=(x,y,z)=>{
-    const ax=Math.abs(x);
-    /* the underside curves up toward the sides, so the orbital shelf and the
-       temporal floor are bowls rather than planes that go edge-on as lines */
-    if(!inProf(z,y-.13*sstep(.12,.72,ax)*sstep(.18,-.12,y))) return false;
-    if(ax>halfW(z)*vTap(y)) return false;
-    if(ax<GAP && y>.02) return false;               // longitudinal fissure
-    const cy=topY(z)-MR, cx=GAP+MR;                 // rounded medial shoulder
-    if(y>cy && ax<cx && (ax-cx)*(ax-cx)+(y-cy)*(y-cy)>MR*MR) return false;
-    /* the temporal lobes hang either side of the brainstem rather than
-       spanning the midline — a full-width slab under the frontal lobe reads
-       end-on as a horizontal slice through the whole brain */
-    if(y<-.06 && ax<.34*sstep(-.06,-.30,y)*sstep(-.58,-.32,z)) return false;
-    return true;
-  };
-
-  /* cerebrum: march each direction in from outside, so the first crossing
-     wins and concavities like the lateral fissure survive */
-  const NC = LOW?4200:8000, GA=Math.PI*(1+Math.sqrt(5));
-  for(let i=0;i<NC;i++){
-    const t=(i+.5)/NC, phi=Math.acos(1-2*t), th=GA*i;
-    const dx=Math.sin(phi)*Math.cos(th), dy=Math.cos(phi), dz=Math.sin(phi)*Math.sin(th);
-    let r=1.42, prev=r, found=false;
-    for(let k=0;k<54;k++){
-      if(inCereb(dx*r,CY+dy*r,dz*r)){ found=true; break; }
-      prev=r; r-=.027; if(r<=.05) break;
-    }
-    if(!found) continue;
-    let lo=r, hi=prev;
-    for(let k=0;k<7;k++){ const m=(lo+hi)*.5;
-      if(inCereb(dx*m,CY+dy*m,dz*m)) lo=m; else hi=m; }
-    const x=dx*lo, y=CY+dy*lo, z=dz*lo;
-    if(lo<.95 && Math.random()>(lo/.95)*(lo/.95)) continue;  // rays crowd inner walls: thin to even density
-
-    const f=foldW(x,y,z);
-    if(f<.070) continue;                      // the sulcus itself stays empty
-    const gy=Math.min(1,(f-.070)/.22);        // 0 at the sulcal wall, 1 at the crown
-    const d=-.085*(1-gy);                     // shoulders fall away into the groove
-    push(x+dx*d, y+dy*d, z+dz*d, 0, dx,dy,dz, gy);
-  }
-
-  /* a sparse interior so the volume does not read as a hollow shell; kept
-     back from the boundary so it never doubles as a second surface */
-  const NI = LOW?140:260;
-  for(let i=0,tries=0;i<NI && tries<NI*16;tries++){
-    const x=(Math.random()*2-1)*.88, y=-.66+Math.random()*1.52, z=(Math.random()*2-1)*1.04;
-    if(!inCereb(x,y,z)) continue;
-    const L=Math.hypot(x,y-CY,z)||1, k=.09/L;
-    if(!inCereb(x+x*k,y+(y-CY)*k,z+z*k)) continue;
-    push(x,y,z,3, x/L,(y-CY)/L,z/L, 1); i++;
-  }
-
-  /* cerebellum — wider than tall, fine parallel folia, vermis down the middle */
-  const NB = LOW?360:520, by=-.50, bz=-.66;
-  for(let i=0;i<NB;i++){
-    const t=(i+.5)/NB, phi=Math.acos(1-2*t), th=GA*i;
-    let x=Math.sin(phi)*Math.cos(th)*.46, y=Math.cos(phi)*.29, z=Math.sin(phi)*Math.sin(th)*.32;
-    if(y>0) y*=.60;                                   // flat on top, under the tentorium
-    z-=.05*(1-Math.abs(x)/.46);
-    const ff=Math.abs(Math.sin(24*(y+.10*z)+.4));     // folia, finer than the gyri
-    if(ff<.34) continue;
-    if(Math.abs(x)<.055) continue;                    // vermis groove
-    const L=Math.hypot(x,y,z)||1, d=-.030*(1-ff);
-    push(x+x/L*d, y+y/L*d+by, z+z/L*d+bz, 1, x/L,y/L,z/L, Math.min(1,(ff-.34)/.55));
-  }
-
-  /* brainstem — midbrain into the pons bulge, then the medulla */
-  const NS = LOW?120:180, rings=30;
-  for(let i=0;i<NS;i++){
-    const v=(i%rings)/rings, k=Math.floor(i/rings), th=i*2.399963+k*.7;
-    const r=.135+.075*bump(v-.30,.17)-.055*v;
-    push(Math.cos(th)*r, -.30-.72*v, -.24-.14*v*v+Math.sin(th)*r*.85, 2, Math.cos(th),0,Math.sin(th), .72);
-  }
-  const N=part.length;
-  const P=new Float32Array(pos);
   const g=new THREE.BufferGeometry();
-  g.setAttribute('position',new THREE.BufferAttribute(P,3));
-  g.setAttribute('aSeed',new THREE.BufferAttribute(new Float32Array(seed),1));
-  g.setAttribute('aSize',new THREE.BufferAttribute(new Float32Array(size),1));
-  g.setAttribute('aPart',new THREE.BufferAttribute(new Float32Array(part),1));
-  g.setAttribute('aNrm',new THREE.BufferAttribute(new Float32Array(nrm),3));
-  g.setAttribute('aGyr',new THREE.BufferAttribute(new Float32Array(gyr),1));
+  g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  g.setAttribute('aNrm',new THREE.BufferAttribute(nrm,3));
+  g.setAttribute('aGyr',new THREE.BufferAttribute(gyr,1));
+  g.setAttribute('aPart',new THREE.BufferAttribute(part,1));
+  g.setAttribute('aSeed',new THREE.BufferAttribute(seed,1));
+  g.setAttribute('aSize',new THREE.BufferAttribute(size,1));
 
-  const U={uTime:{value:0},uPtr:{value:new THREE.Vector3(9,9,9)},uDpr:{value:1},uFade:{value:1}};
+  const U={uTime:{value:0},uPtr:{value:new THREE.Vector3(9,9,9)},uDpr:{value:1},uFade:{value:1},uRes:{value:new THREE.Vector2(1,1)},
+    uMouse:{value:new THREE.Vector2(-1e5,-1e5)},uHot:{value:0}};   // cursor in centred device px; hover strength
   const pts=new THREE.Points(g,new THREE.ShaderMaterial({
     transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:U,
-    vertexShader:`attribute float aSeed;attribute float aSize;attribute float aPart;uniform float uTime;uniform vec3 uPtr;uniform float uDpr;attribute vec3 aNrm;attribute float aGyr;varying float vG;varying float vP;varying float vD;varying float vR;varying float vY;
-      void main(){vec3 p=position*(1.0+sin(uTime*.9+aSeed*6.283)*.012);
-        vec4 wp=modelMatrix*vec4(p,1.0);
-        float d=distance(wp.xyz,uPtr);
-        float glow=smoothstep(1.5,0.0,d);
-        float wave=sin(uTime*1.6-length(p)*5.0)*.5+.5;
-        vG=glow*1.15+wave*.13; vP=aPart;
+    vertexShader:`attribute float aSeed;attribute float aSize;attribute float aPart;attribute vec3 aNrm;attribute float aGyr;
+      uniform float uTime;uniform float uDpr;uniform vec2 uRes;uniform vec2 uMouse;uniform float uHot;
+      varying float vG;varying float vD;varying float vR;varying float vY;varying float vT;varying float vN;
+      void main(){
+        vec4 wp=modelMatrix*vec4(position,1.0);
+        vN=step(3.5,aPart);
+        float wave=sin(uTime*1.6-length(position)*5.0)*.5+.5;
+        vT=.65+.35*sin(uTime*(.6+aSeed*.9)+aSeed*40.0);           // slow twinkle
+        vY=aGyr;
         vec4 mv=viewMatrix*wp;
+        /* GAINN red under the cursor: measured on screen, so it is the dots
+           you are actually pointing at that light up, with a soft edge */
+        vec4 cp=projectionMatrix*mv;
+        float dm=distance(cp.xy/cp.w*uRes*.5,uMouse)/uDpr;
+        float glow=uHot*smoothstep(140.0,35.0,dm);
+        vG=glow;
         vec3 wn=normalize(mat3(modelMatrix)*aNrm);
         float face=dot(wn,normalize(cameraPosition-wp.xyz));
-        vD=clamp(face*.5+.5,0.0,1.0);
-        vR=pow(1.0-abs(face),3.5); vY=aGyr;
-        float inr=step(2.5,aPart);
-        gl_PointSize=aSize*(.62+vD*.66)*(.70+vY*.60)*(1.0+vR*.30)*(1.0-inr*.46)*(1.0+glow*1.7)*uDpr*(13.0/-mv.z);
-        gl_Position=projectionMatrix*mv;}`,
-    fragmentShader:`varying float vG;varying float vP;varying float vD;varying float vR;varying float vY;uniform float uFade;
+        vD=clamp(face,0.0,1.0);
+        vR=pow(1.0-vD,3.0);
+        gl_PointSize=aSize*(.62+.38*vY)*(.80+.20*vD)*(1.0+glow*.5)*uDpr*(20.0/-mv.z);
+        gl_Position=cp;}`,
+    fragmentShader:`varying float vG;varying float vD;varying float vR;varying float vY;varying float vT;varying float vN;uniform float uFade;
       void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;
-        float a=smoothstep(.5,.30,d)*.55+exp(-d*d*40.0)*.6;
-        vec3 near=mix(vec3(.78,.90,1.0),vec3(.60,.79,1.0),step(.5,vP));
-        vec3 far =mix(vec3(.17,.28,.56),vec3(.14,.25,.50),step(.5,vP));
-        vec3 c=mix(far,near,vD);
-        c+=vec3(.60,.80,1.0)*vR*.42;                  // rim traces the outline
-        c*=(.52+vY*1.00);                             // crowns lit, sulcal walls dark
-        c=mix(c,vec3(1.0,.32,.18),clamp(vG,0.,1.));
-        float inr=step(2.5,vP);
-        gl_FragColor=vec4(c,a*mix(.18,1.0,vD)*(.80+vR*.30)*(.40+vY*.88)*(.72+vG*.85)*(1.0-inr*.66)*uFade);}`
+        float a=smoothstep(.5,.16,d)*.50+exp(-d*d*26.0)*.70;
+        vec3 c=mix(vec3(.38,.52,.86),vec3(.84,.92,1.0),vD);
+        c+=vec3(.50,.70,1.0)*vR*.30;                  // rim traces the outline
+        c=mix(c,vec3(.95,.98,1.0),vN*.5);
+        c=mix(c,vec3(1.0,.29,.17),clamp(vG*.85,0.,1.));   // --red #FF4A2B
+        gl_FragColor=vec4(c,a*(.38+.62*vD+vR*.35)*mix(.42+.58*vY,1.0,vG)*mix(vT,1.0,max(vN,vG))*(1.0+vN*.4)*(1.0+vG*.35)*uFade);}`
   }));
-  grp.add(pts);
 
-  /* synapses: link each point to its 2 nearest neighbours, but only within
-     a short radius so the fissures and sulci are never bridged */
-  const CELL=.11, MAXD=.085, grid=new Map();
-  const cid=(a,b,c)=>a*73856093^b*19349663^c*83492791;
-  for(let i=0;i<N;i++){
-    const k=cid(Math.floor(P[i*3]/CELL),Math.floor(P[i*3+1]/CELL),Math.floor(P[i*3+2]/CELL));
-    const a=grid.get(k); if(a) a.push(i); else grid.set(k,[i]);
-  }
-  const seg=[], seen=new Set(), M2=MAXD*MAXD;
-  for(let i=0;i<N;i++){
-    const ax=P[i*3], ay=P[i*3+1], az=P[i*3+2];
-    const gx=Math.floor(ax/CELL), gy=Math.floor(ay/CELL), gz=Math.floor(az/CELL);
-    let b1=-1,b2=-1,d1=1e9,d2=1e9;
-    for(let ox=-1;ox<2;ox++)for(let oy=-1;oy<2;oy++)for(let oz=-1;oz<2;oz++){
-      const a=grid.get(cid(gx+ox,gy+oy,gz+oz)); if(!a) continue;
-      for(let n=0;n<a.length;n++){ const j=a[n]; if(j===i) continue;
-        const dx=ax-P[j*3], dy=ay-P[j*3+1], dz=az-P[j*3+2], dd=dx*dx+dy*dy+dz*dz;
-        if(dd>M2) continue;
-        if(dd<d1){d2=d1;b2=b1;d1=dd;b1=j;} else if(dd<d2){d2=dd;b2=j;} }
+  /* sulcal lines — each line is one anchor plus byte deltas, drawn as
+     screen-space ribbons so they keep a real width, with a faint halo
+     under them and a slow pulse running along each one */
+  const lS=dec(D.lS,Int16Array), lD=dec(D.lD,Int8Array), lN=dec(D.lN,Int8Array), lW=dec(D.lW,Uint8Array), lC=dec(D.lC,Uint16Array), lK=dec(D.lK,Uint8Array);
+  const NN=lW.length, lP=new Float32Array(NN*3);
+  for(let c=0,o=0,d=0;c<lC.length;c++){
+    let x=lS[c*3], y=lS[c*3+1], z=lS[c*3+2];
+    for(let j=0;j<lC[c];j++,o++){
+      if(j){ x+=lD[d*3]*D.dk; y+=lD[d*3+1]*D.dk; z+=lD[d*3+2]*D.dk; d++; }
+      lP[o*3]=x*q; lP[o*3+1]=y*q; lP[o*3+2]=z*q;
     }
-    for(const b of [b1,b2]){ if(b<0) continue;
-      const key=i<b?i*100000+b:b*100000+i; if(seen.has(key)) continue; seen.add(key);
-      seg.push(ax,ay,az,P[b*3],P[b*3+1],P[b*3+2]); }
+  }
+  const A={p:new Float32Array(NN*6),pv:new Float32Array(NN*6),nx:new Float32Array(NN*6),sd:new Float32Array(NN*2),
+    n:new Float32Array(NN*6),w:new Float32Array(NN*2),s:new Float32Array(NN*2),r:new Float32Array(NN*2)};
+  const idx=[], P3=i=>[lP[i*3],lP[i*3+1],lP[i*3+2]];
+  for(let c=0,o=0;c<lC.length;c++){
+    const n=lC[c], sd=Math.random()+lK[c], f=P3(o), l=P3(o+n-1);
+    const closed=n>2 && Math.hypot(f[0]-l[0],f[1]-l[1],f[2]-l[2])<1e-4;
+    let acc=0;
+    for(let j=0;j<n;j++){
+      const i=o+j, cur=P3(i);
+      let pv, nx;
+      if(j>0) pv=P3(i-1); else if(closed) pv=P3(o+n-2); else { const b=P3(i+1); pv=[2*cur[0]-b[0],2*cur[1]-b[1],2*cur[2]-b[2]]; }
+      if(j<n-1) nx=P3(i+1); else if(closed) nx=P3(o+1); else { const b=P3(i-1); nx=[2*cur[0]-b[0],2*cur[1]-b[1],2*cur[2]-b[2]]; }
+      if(j>0){ const b=P3(i-1); acc+=Math.hypot(cur[0]-b[0],cur[1]-b[1],cur[2]-b[2]); }
+      const nn=oct(lN,i);
+      for(let h=0;h<2;h++){ const v=i*2+h;
+        for(let k=0;k<3;k++){ A.p[v*3+k]=cur[k]; A.pv[v*3+k]=pv[k]; A.nx[v*3+k]=nx[k]; A.n[v*3+k]=nn[k]; }
+        A.sd[v]=h?1:-1; A.w[v]=lW[i]/255; A.s[v]=acc; A.r[v]=sd; }
+      if(j<n-1) idx.push(i*2,i*2+2,i*2+1, i*2+1,i*2+2,i*2+3);
+    }
+    o+=n;
   }
   const lg=new THREE.BufferGeometry();
-  lg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(seg),3));
-  const lines=new THREE.LineSegments(lg,new THREE.ShaderMaterial({
-    transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:U,
-    vertexShader:`uniform vec3 uPtr;uniform float uTime;varying float vG;
-      void main(){vec4 wp=modelMatrix*vec4(position,1.0);
-        float d=distance(wp.xyz,uPtr);
-        vG=smoothstep(1.7,0.0,d)+(sin(uTime*2.2-position.y*4.0)*.5+.5)*.09;
-        gl_Position=projectionMatrix*viewMatrix*wp;}`,
-    fragmentShader:`varying float vG;uniform float uFade;
-      void main(){vec3 c=mix(vec3(.36,.54,.86),vec3(1.0,.36,.2),clamp(vG,0.,1.));
-        gl_FragColor=vec4(c,(.06+vG*.42)*uFade);}`
-  }));
-  grp.add(lines);
+  lg.setAttribute('position',new THREE.BufferAttribute(A.p,3));
+  lg.setAttribute('aPrev',new THREE.BufferAttribute(A.pv,3));
+  lg.setAttribute('aNext',new THREE.BufferAttribute(A.nx,3));
+  lg.setAttribute('aSide',new THREE.BufferAttribute(A.sd,1));
+  lg.setAttribute('aNrm',new THREE.BufferAttribute(A.n,3));
+  lg.setAttribute('aW',new THREE.BufferAttribute(A.w,1));
+  lg.setAttribute('aS',new THREE.BufferAttribute(A.s,1));
+  lg.setAttribute('aSeed',new THREE.BufferAttribute(A.r,1));
+  lg.setIndex(idx);
+  const lineMat=halo=>new THREE.ShaderMaterial({
+    transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,uniforms:U,
+    defines:halo?{HALO:1}:{},
+    vertexShader:`attribute vec3 aPrev;attribute vec3 aNext;attribute float aSide;attribute vec3 aNrm;attribute float aW;attribute float aS;attribute float aSeed;
+      uniform vec2 uRes;uniform float uDpr;uniform vec2 uMouse;uniform float uHot;uniform float uTime;
+      varying float vSide;varying float vA;varying float vG;varying float vPulse;varying float vD;
+      void main(){
+        mat4 m=projectionMatrix*modelViewMatrix;
+        vec4 c=m*vec4(position,1.0), p=m*vec4(aPrev,1.0), n=m*vec4(aNext,1.0);
+        vec2 h=uRes*.5, sc=c.xy/c.w*h, d1=sc-p.xy/p.w*h, d2=n.xy/n.w*h-sc;
+        vec2 t1=length(d1)>1e-4?normalize(d1):normalize(d2+1e-6);
+        vec2 t2=length(d2)>1e-4?normalize(d2):t1;
+        vec2 t=normalize(t1+t2+vec2(1e-6)), nr=vec2(-t.y,t.x);
+        float mit=1.0/max(dot(nr,vec2(-t1.y,t1.x)),.6);   // mitred joins, capped
+        #ifdef HALO
+          float w=1.6*uDpr*(.75+.5*aW)*(floor(aSeed)>.5?3.0:5.0);
+        #else
+          float w=1.6*uDpr*(.70+.45*aW)*(floor(aSeed)>.5?.62:1.0)+uDpr;   // cerebellum/stem finer; + 1px of feather
+        #endif
+        c.xy+=nr*aSide*w*.5*mit/h*c.w;
+        gl_Position=c;
+        vec4 wp=modelMatrix*vec4(position,1.0);
+        float face=dot(normalize(mat3(modelMatrix)*aNrm),normalize(cameraPosition-wp.xyz));
+        vD=clamp(face,0.0,1.0); vSide=aSide;
+        vA=(.30+.70*aW)*smoothstep(-.02,.40,face);
+        vG=uHot*smoothstep(140.0,35.0,distance(sc,uMouse)/uDpr);
+        float x=fract(aS*.32-uTime*.085+fract(aSeed)*17.3);
+        vPulse=pow(x,14.0)*smoothstep(1.0,.975,x);
+      }`,
+    fragmentShader:`varying float vSide;varying float vA;varying float vG;varying float vPulse;varying float vD;uniform float uFade;
+      void main(){
+        float e=abs(vSide);
+        vec3 c=mix(vec3(.46,.62,.96),vec3(.80,.90,1.0),vD*.85);
+        c=mix(c,vec3(1.0),vPulse*.5);
+        c=mix(c,vec3(1.0,.29,.17),clamp(vG*.85,0.,1.));
+        #ifdef HALO
+          float a=exp(-e*e*5.0)*.15;
+        #else
+          float a=1.0-smoothstep(.45,1.0,e);
+        #endif
+        gl_FragColor=vec4(c,a*vA*(.95+vPulse*.9+vG*.15)*uFade);
+      }`
+  });
+  const halo=new THREE.Mesh(lg,lineMat(true)), lines=new THREE.Mesh(lg,lineMat(false));
+
+  /* occluder: depth only, drawn first */
+  const oP=dec(D.oP,Int16Array), og=new THREE.BufferGeometry();
+  og.setAttribute('position',new THREE.BufferAttribute(Float32Array.from(oP,v=>v*q),3));
+  og.setIndex(new THREE.BufferAttribute(dec(D.oI,Uint16Array),1));
+  const occ=new THREE.Mesh(og,new THREE.MeshBasicMaterial({colorWrite:false}));
+  occ.renderOrder=-1; halo.renderOrder=1; pts.renderOrder=2; lines.renderOrder=3;
+  grp.add(occ,halo,pts,lines);
 
   /* pointer → world point on the plane the brain sits in */
   const ptr=new THREE.Vector3(9,9,9), want=new THREE.Vector3(9,9,9);
   const ray=new THREE.Raycaster(), plane=new THREE.Plane(new THREE.Vector3(0,0,1),0), hit=new THREE.Vector3();
-  let mx=0,my=0,tx=0,ty=0,active=false;
-  addEventListener('pointermove',e=>{
-    const w=innerWidth,h=innerHeight;
-    mx=(e.clientX/w)*2-1; my=-(e.clientY/h)*2+1;
-    tx=my*.26; ty=mx*.5; active=true;
+  let active=false;
+  const aim=e=>{
+    const mx=(e.clientX/innerWidth)*2-1, my=-(e.clientY/innerHeight)*2+1;
     ray.setFromCamera({x:mx,y:my},cam);
-    if(ray.ray.intersectPlane(plane,hit)) want.copy(hit);
+    return ray.ray.intersectPlane(plane,hit)?hit:null;
+  };
+  addEventListener('pointermove',e=>{ active=true; const h=aim(e); if(h) want.copy(h);
+    const r=host.getBoundingClientRect(), d=U.uDpr.value;
+    U.uMouse.value.set((e.clientX-r.left-r.width/2)*d, -(e.clientY-r.top-r.height/2)*d);
   },{passive:true});
   addEventListener('pointerleave',()=>{active=false;want.set(9,9,9)});
+
+  /* press on the brain to grab it, drag to turn it any way; let go and it
+     coasts to a stop, then the slow auto-turn picks up from wherever it is */
+  const onBrain=e=>{ const h=aim(e); return !!h && h.distanceTo(grp.position)<hoverR; };
+  let drag=null, rotY=0, rotX=0, velY=0, velX=0, idle=99;
+  const hero=document.getElementById('hero');
+  hero.addEventListener('pointerdown',e=>{
+    if(RM || e.button>0 || e.target.closest('a,button,input,textarea,select') || !onBrain(e)) return;
+    drag={x:e.clientX,y:e.clientY,id:e.pointerId}; velY=velX=0;
+    hero.setPointerCapture(e.pointerId); host.style.cursor='grabbing'; document.body.style.cursor='grabbing';
+    e.preventDefault();
+  });
+  hero.addEventListener('pointermove',e=>{
+    if(!drag || e.pointerId!==drag.id) return;
+    const k=Math.PI*1.6/Math.max(host.clientWidth*.5,360);   // half the hero wide ≈ 290° of turn
+    const dy=(e.clientX-drag.x)*k, dx=(e.clientY-drag.y)*k;
+    drag.x=e.clientX; drag.y=e.clientY;
+    rotY+=dy; rotX=Math.max(-1.2,Math.min(1.2,rotX+dx));
+    velY=dy; velX=dx;
+  });
+  const release=e=>{ if(!drag || (e && e.pointerId!==drag.id)) return;
+    drag=null; idle=0; host.style.cursor=''; document.body.style.cursor=''; };
+  hero.addEventListener('pointerup',release); hero.addEventListener('pointercancel',release);
+  /* on touch, a press that starts on the brain turns it instead of scrolling */
+  hero.addEventListener('touchmove',e=>{ if(drag) e.preventDefault(); },{passive:false});
 
   let baseY=.12, dim=1, hoverR=2.4;
   const hl=document.getElementById('hl'), hin=document.getElementById('heroIn'), nav=document.getElementById('nav');
   const BR=1.2;                                    // brain's on-screen half-extent at scale 1, any turn
   function resize(){ const w=host.clientWidth,h=host.clientHeight;
     cam.aspect=w/h; cam.updateProjectionMatrix(); rnd.setSize(w,h,false);
-    const dpr=Math.min(devicePixelRatio,2); rnd.setPixelRatio(dpr); U.uDpr.value=dpr;
+    const dpr=Math.min(devicePixelRatio,2); rnd.setPixelRatio(dpr); U.uDpr.value=dpr; U.uRes.value.set(w*dpr,h*dpr);
     const narrow=w<820;
     let s=1.05;
     const wpp=2*cam.position.z*Math.tan(cam.fov*Math.PI/360)/h, hr=host.getBoundingClientRect();
@@ -1231,7 +1300,7 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
   if(document.fonts) document.fonts.ready.then(resize); // headline width settles once D-DIN loads
 
   const clock=new THREE.Clock();
-  let sc=0, spin=0, ox=0, oy=0, last=0, hoverT=0, prevHover=false;
+  let sc=0, spin=0, last=0, prevHover=false;
   addEventListener('scroll',()=>{ sc=Math.min(scrollY/innerHeight,1.2); },{passive:true});
 
   /* opens square on the lateral view, holds a beat, then eases into the turn */
@@ -1243,19 +1312,18 @@ setTimeout(()=>heroIn.classList.add('lit'),700);
     const dt=Math.min(t-last,.05); last=t;
     ptr.lerp(want,.12); U.uPtr.value.copy(ptr);
 
-    /* hovering the brain hands rotation over to the cursor and lifts it a
-       touch — auto-spin eases out so the two never fight each other, and
-       the whole thing eases back once the cursor moves away */
-    const isHover = !RM && active && ptr.distanceTo(grp.position)<hoverR;
-    if(isHover!==prevHover){ host.style.cursor=isHover?'grab':''; prevHover=isHover; }
-    hoverT += ((isHover?1:0)-hoverT)*.07;
+    /* the grab cursor shows wherever a press would pick the brain up */
+    const isHover = !RM && !drag && active && ptr.distanceTo(grp.position)<hoverR;
+    if(isHover!==prevHover){ host.style.cursor=isHover?'grab':''; hero.style.cursor=isHover?'grab':''; prevHover=isHover; }
+    U.uHot.value += (((isHover||drag)?1:0)-U.uHot.value)*.12;   // red fades in over the brain, out off it
 
-    const e=Math.min(1,Math.max(0,(t-HOLD)/EASE));
-    spin += RM?0:dt*.096*(e*e*(3-2*e))*(1-hoverT*.82);   // yields to the cursor on hover
-    const tyH=ty*(1+hoverT*2.6), txH=tx*(1+hoverT*1.9);  // wider swing while hovered = a real spin
-    oy += (tyH-oy)*.06; ox += (txH-ox)*.06;
-    grp.rotation.y = LAT + spin + oy + sc*.55;
-    grp.rotation.x = -.10 + ox + sc*.12;
+    /* coast after a throw; auto-turn waits until the coasting is done */
+    if(!drag){ rotY+=velY; rotX=Math.max(-1.2,Math.min(1.2,rotX+velX)); velY*=.94; velX*=.94; idle+=dt; }
+    const e=Math.min(1,Math.max(0,(t-HOLD)/EASE)), back=Math.min(1,Math.max(0,(idle-.6)/1.5));
+    spin += RM||drag?0:dt*.096*(e*e*(3-2*e))*back;
+    if(!drag) rotX += (0-rotX)*.02*back;             // tilt eases back to level when left alone
+    grp.rotation.y = LAT + spin + rotY + sc*.55;
+    grp.rotation.x = -.10 + rotX + sc*.12;
     grp.rotation.z = -.04 + Math.sin(t*.25)*.045;
     grp.position.y = baseY - sc*1.5 + Math.sin(t*.5)*.05;
 
